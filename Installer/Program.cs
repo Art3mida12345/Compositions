@@ -217,13 +217,98 @@ namespace Installer
 
         private static void CreateSequences()
         {
+            var conn = new OracleConnection(ConnectionToLyb);
+            try
+            {
+                Console.WriteLine("Start to create sequences...");
+                conn.Open();
+                var cmd = conn.CreateCommand();
 
+                try
+                {
+                    cmd.CommandText = @"create sequence countries_seq start with 0 increment by 1 minvalue 0";
+                    cmd.ExecuteNonQuery();
+                    Console.WriteLine("sequence countries_seq was created successfully...");
+                }
+                catch
+                {
+                    Console.WriteLine("sequence countries_seq already exists");
+                } 
+
+                try
+                {
+                    cmd.CommandText = @"create sequence languages_seq start with 0 increment by 1 minvalue 0";
+                    cmd.ExecuteNonQuery();
+                    Console.WriteLine("sequence languages_seq was created successfully...");
+                }
+                catch
+                {
+                    Console.WriteLine("sequence languages_seq already exists");
+                }
+
+                try
+                {
+                    cmd.CommandText = @"create sequence types_seq start with 0 increment by 1 minvalue 0";
+                    cmd.ExecuteNonQuery();
+                    Console.WriteLine("sequence types_seq was created successfully...");
+                }
+                catch
+                {
+                    Console.WriteLine("sequence types_seq already exists");
+                } 
+
+
+                try
+                {
+                    cmd.CommandText = @"create sequence genres_seq start with 0 increment by 1 minvalue 0";
+                    cmd.ExecuteNonQuery();
+                    Console.WriteLine("sequence genres_seq was created successfully...");
+                }
+                catch
+                {
+                    Console.WriteLine("sequence genres_seq already exists");
+                }
+
+                try
+                {
+                    cmd.CommandText = @"create sequence authors_seq start with 0 increment by 1 minvalue 0";
+                    cmd.ExecuteNonQuery();
+                    Console.WriteLine("sequence authors_seq was created successfully...");
+                }
+                catch
+                {
+                    Console.WriteLine("sequence authors_seq already exists");
+                } 
+
+                try
+                {
+                    cmd.CommandText = @"create sequence compositions_seq start with 0 increment by 1 minvalue 0";
+                    cmd.ExecuteNonQuery();
+                    Console.WriteLine("sequence compositions_seq was created successfully...");
+                }
+                catch
+                {
+                    Console.WriteLine("sequence compositions_seq already exists");
+                } 
+
+                Console.WriteLine("Sequences were created successfully...");
+            }
+            catch
+            {
+                Console.WriteLine("Something went wrong( Try again");
+            }
+            finally
+            {
+                conn.Close();
+            }
         }
+
 
         static void Main()
         {
             CreateUser();
             CreateTables();
+            CreateSequences();
             Console.ReadLine();
         }
     }
