@@ -6,9 +6,9 @@ namespace Installer
     class Program
     {
         private static readonly string ConnectionToSys =
-            "Data Source=(DESCRIPTION=(ADDRESS=(PROTOCOL=TCP)(HOST=DESKTOP-HAB6FE4)(PORT=1521))(CONNECT_DATA=(SERVER=DEDICATED)(SERVICE_NAME=XE)));User Id=SYS;Password=123;DBA Privilege=SYSDBA";
+            $"Data Source=(DESCRIPTION=(ADDRESS=(PROTOCOL=TCP)(HOST={Environment.MachineName})(PORT=1521))(CONNECT_DATA=(SERVER=DEDICATED)(SERVICE_NAME=XE)));User Id=SYS;Password=123;DBA Privilege=SYSDBA";
         private static readonly string ConnectionToLyb =
-            "Data Source=(DESCRIPTION=(ADDRESS=(PROTOCOL=TCP)(HOST=DESKTOP-HAB6FE4)(PORT=1521))(CONNECT_DATA=(SERVER=DEDICATED)(SERVICE_NAME=XE)));User Id=LYB;Password=123;";
+            $"Data Source=(DESCRIPTION=(ADDRESS=(PROTOCOL=TCP)(HOST={Environment.MachineName})(PORT=1521))(CONNECT_DATA=(SERVER=DEDICATED)(SERVICE_NAME=XE)));User Id=LYB;Password=123;";
 
         private static void CreateUser()
         {
@@ -213,6 +213,11 @@ namespace Installer
             {
                 conn.Close();
             }
+        }
+
+        private static void CreateSequences()
+        {
+
         }
 
         static void Main()
