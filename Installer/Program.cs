@@ -72,7 +72,7 @@ namespace Installer
                 }
                 catch
                 {
-                    Console.WriteLine("Something went wrong(");
+                    Console.WriteLine("1-Table already exists");
                 }//Countries-1
 
                 try
@@ -89,7 +89,7 @@ namespace Installer
                 }
                 catch
                 {
-                    Console.WriteLine("Something went wrong(");
+                    Console.WriteLine("2-Table already exists");
                 }//Languages-2
 
                 try
@@ -105,7 +105,7 @@ namespace Installer
                 }
                 catch
                 {
-                    Console.WriteLine("Something went wrong(");
+                    Console.WriteLine("3-Table already exists");
                 }//Types-3
 
                 try
@@ -121,7 +121,7 @@ namespace Installer
                 }
                 catch
                 {
-                    Console.WriteLine("Something went wrong(");
+                    Console.WriteLine("4-Table already exists");
                 }//Genres-4
 
                 try
@@ -143,7 +143,7 @@ namespace Installer
                 }
                 catch
                 {
-                    Console.WriteLine("Something went wrong(");
+                    Console.WriteLine("5-Table already exists");
                 }//Authors-5
 
                 try
@@ -164,7 +164,7 @@ namespace Installer
                 }
                 catch
                 {
-                    Console.WriteLine("Something went wrong(");
+                    Console.WriteLine("6-Table already exists");
                 }//Compositions-6
 
                 try
@@ -175,14 +175,14 @@ namespace Installer
   constraint comps_genres_pk primary key(genre_id, composition_id),
   constraint genres_fk foreign key (genre_id) references kudriavtseva_genres,
   constraint composition_fk foreign key (composition_id) references kudriavtseva_compositions
-);
+)
 ";
                     cmd.ExecuteNonQuery();
                     Console.WriteLine("7 was created successfully...");
                 }
                 catch
                 {
-                    Console.WriteLine("Something went wrong(");
+                    Console.WriteLine("7-Table already exists");
                 }//Compositions-Authors-7
 
                 try
@@ -200,14 +200,14 @@ namespace Installer
                 }
                 catch
                 {
-                    Console.WriteLine("Something went wrong(");
+                    Console.WriteLine("8-Table already exists");
                 }//Compositions-Genres-8
 
                 Console.WriteLine("Tables creates successfully...");
             }
             catch
             {
-                Console.WriteLine("Something went wrong(");
+                Console.WriteLine("Something went wrong( Try again");
             }
             finally
             {
@@ -215,11 +215,11 @@ namespace Installer
             }
         }
 
-    static void Main()
-    {
-        CreateUser();
-        CreateTables();
-        Console.ReadLine();
+        static void Main()
+        {
+            CreateUser();
+            CreateTables();
+            Console.ReadLine();
+        }
     }
-}
 }
