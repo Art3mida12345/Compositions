@@ -303,7 +303,6 @@ namespace Installer
             }
         }
 
-
         static void Main()
         {
             CreateUser();

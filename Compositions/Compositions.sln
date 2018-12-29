@@ -3,9 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.28307.168
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Compositions", "Compositions\Compositions.csproj", "{AE52269D-0F26-487B-8397-45BD42E435FB}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Installer", "..\Installer\Installer.csproj", "{71AA17C3-E8B8-425B-8E27-C79EA160764E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WorkOfFiction", "WorkOfFiction\WorkOfFiction.csproj", "{CE0F5BA2-BFAA-458A-8719-1B02A1ABED94}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -13,14 +13,14 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{AE52269D-0F26-487B-8397-45BD42E435FB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{AE52269D-0F26-487B-8397-45BD42E435FB}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{AE52269D-0F26-487B-8397-45BD42E435FB}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{AE52269D-0F26-487B-8397-45BD42E435FB}.Release|Any CPU.Build.0 = Release|Any CPU
 		{71AA17C3-E8B8-425B-8E27-C79EA160764E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{71AA17C3-E8B8-425B-8E27-C79EA160764E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{71AA17C3-E8B8-425B-8E27-C79EA160764E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{71AA17C3-E8B8-425B-8E27-C79EA160764E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CE0F5BA2-BFAA-458A-8719-1B02A1ABED94}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CE0F5BA2-BFAA-458A-8719-1B02A1ABED94}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CE0F5BA2-BFAA-458A-8719-1B02A1ABED94}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CE0F5BA2-BFAA-458A-8719-1B02A1ABED94}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
