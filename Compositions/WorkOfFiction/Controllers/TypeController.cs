@@ -7,7 +7,7 @@ namespace WorkOfFiction.Controllers
 {
     public class TypeController : Controller
     {
-        private OracleHelper _oracleHelper;
+        private readonly OracleHelper _oracleHelper;
 
         public TypeController()
         {
@@ -22,12 +22,27 @@ namespace WorkOfFiction.Controllers
             return View(types);
         }
 
-        public ActionResult Edit(string id)
+        public ActionResult Edit(int? id)
         {
-            throw new System.NotImplementedException();
+            var type = id.HasValue ? _oracleHelper.GetType(id.Value) : new Type();
+
+            return View(type);
         }
 
-        public ActionResult Delete(string id)
+        [HttpPost]
+        public ActionResult Edit(Type type)
+        {
+            if (ModelState.IsValid)
+            {
+                _oracleHelper.Update(TableName.Types, type.ToStringExtension());
+
+                return RedirectToAction("Index");
+            }
+
+            return View(type);
+        }
+
+        public ActionResult Delete(int? id)
         {
             throw new System.NotImplementedException();
         }
