@@ -42,9 +42,15 @@ namespace WorkOfFiction.Controllers
             return View(type);
         }
 
+        [HttpGet]
         public ActionResult Delete(int? id)
         {
-            throw new System.NotImplementedException();
+            if (id.HasValue)
+            {
+                _oracleHelper.Delete(TableName.Types, id.Value);
+            }
+
+            return RedirectToAction("Index");
         }
 
         public ViewResult Create()
