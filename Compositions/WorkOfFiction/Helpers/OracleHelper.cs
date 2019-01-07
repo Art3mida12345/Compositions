@@ -4,6 +4,8 @@ using System.Data.OracleClient;
 using System.Text;
 using WebGrease.Css.Extensions;
 using WorkOfFiction.Enums;
+using WorkOfFiction.Models;
+using Type = WorkOfFiction.Models.Type;
 
 namespace WorkOfFiction.Helpers
 {
@@ -101,10 +103,10 @@ kudriavtseva_compositions.language_id, kudriavtseva_compositions.type_id"},
         #endregion
 
         #region GetAll
-        public IEnumerable<Models.Type> GetAllTypes()
+        public IEnumerable<Type> GetAllTypes()
         {
-            var queryString = "select * from kudriavtseva_types";
-            var types = new List<Models.Type>();
+            var queryString = $"select * from {TableName.Types}";
+            var types = new List<Type>();
 
             using (var connection = new OracleConnection(_connection))
             {
@@ -114,7 +116,7 @@ kudriavtseva_compositions.language_id, kudriavtseva_compositions.type_id"},
                 {
                     while (reader.Read())
                     {
-                        types.Add(new Models.Type
+                        types.Add(new Type
                         {
                             Id = reader.GetInt32(0),
                             Name = reader.GetString(1)
@@ -125,13 +127,11 @@ kudriavtseva_compositions.language_id, kudriavtseva_compositions.type_id"},
 
             return types;
         }
-        #endregion
 
-        #region GetOne
-        public Models.Type GetType(int id)
+        public IEnumerable<Author> GetAllAuthors()
         {
-            var queryString = $"select name from kudriavtseva_types where type_id = {id}";
-            var type = new Models.Type();
+            var queryString = $"select * from {_tables[TableName.Authors]}";
+            var authors = new List<Author>();
 
             using (var connection = new OracleConnection(_connection))
             {
@@ -141,13 +141,277 @@ kudriavtseva_compositions.language_id, kudriavtseva_compositions.type_id"},
                 {
                     while (reader.Read())
                     {
-                        type.Id = id;
-                        type.Name = reader.GetString(0);
+                        authors.Add(new Author
+                        {
+                            Id = reader.GetInt32(0),
+                            FirstName = reader.GetString(1),
+                            LastName = reader.GetString(2),
+                            DateBirth = reader.GetDateTime(3),
+                            CountryId = reader.GetInt32(4),
+                            Nickname = reader.GetString(5)
+                        });
                     }
                 }
             }
 
-            return type;
+            return authors;
+        }
+
+        public IEnumerable<Composition> GetAllCompositions()
+        {
+            var queryString = $"select * from {_tables[TableName.Compositions]}";
+            var compositions = new List<Composition>();
+
+            using (var connection = new OracleConnection(_connection))
+            {
+                var command = new OracleCommand(queryString, connection);
+                connection.Open();
+                using (var reader = command.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        compositions.Add(new Composition
+                        {
+                            Id = reader.GetInt32(0),
+                            Title = reader.GetString(1),
+                            Annotation = reader.GetString(2),
+                            LanguageId = reader.GetInt32(3),
+                            TypeId = reader.GetInt32(4)
+                        });
+                    }
+                }
+            }
+
+            return compositions;
+        }
+
+        public IEnumerable<Country> GetAllCountries()
+        {
+            var queryString = $"select * from {_tables[TableName.Countries]}";
+            var countries = new List<Country>();
+
+            using (var connection = new OracleConnection(_connection))
+            {
+                var command = new OracleCommand(queryString, connection);
+                connection.Open();
+                using (var reader = command.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        countries.Add(new Country
+                        {
+                            Id = reader.GetInt32(0),
+                            CountryName = reader.GetString(1),
+                            Exist = reader.GetBoolean(2),
+                            Capital = reader.GetString(3)
+                        });
+                    }
+                }
+            }
+
+            return countries;
+        }
+
+        public IEnumerable<Genre> GetAllGenres()
+        {
+            var queryString = $"select * from {_tables[TableName.Genres]}";
+            var genres = new List<Genre>();
+
+            using (var connection = new OracleConnection(_connection))
+            {
+                var command = new OracleCommand(queryString, connection);
+                connection.Open();
+                using (var reader = command.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        genres.Add(new Genre
+                        {
+                            Id = reader.GetInt32(0),
+                            Name = reader.GetString(1)
+                        });
+                    }
+                }
+            }
+
+            return genres;
+        }
+
+        public IEnumerable<Language> GetAllLanguages()
+        {
+            var queryString = $"select * from {_tables[TableName.Genres]}";
+            var languages = new List<Language>();
+
+            using (var connection = new OracleConnection(_connection))
+            {
+                var command = new OracleCommand(queryString, connection);
+                connection.Open();
+                using (var reader = command.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        languages.Add(new Language
+                        {
+                            Id = reader.GetInt32(0),
+                            ShortCode = reader.GetString(1),
+                            Description = reader.GetString(2)
+                        });
+                    }
+                }
+            }
+
+            return languages;
+        }
+        #endregion
+
+        #region GetOne
+        public Type GetType(int? id)
+        {
+            if (id.HasValue)
+            {
+                var queryString = $"select name from kudriavtseva_types where type_id = {id}";
+                var type = new Type();
+
+                using (var connection = new OracleConnection(_connection))
+                {
+                    var command = new OracleCommand(queryString, connection);
+                    connection.Open();
+                    using (var reader = command.ExecuteReader())
+                    {
+                        if (reader.Read())
+                        {
+                            type.Id = id.Value;
+                            type.Name = reader.GetString(0);
+                        }
+                    }
+                }
+
+                return type;
+            }
+
+            return null;
+        }
+
+        public Genre GetGenre(int? id)
+        {
+            if (id.HasValue)
+            {
+                var queryString = $"select name from {_tables[TableName.Genres]} where genre_id = {id}";
+                var genre = new Genre();
+
+                using (var connection = new OracleConnection(_connection))
+                {
+                    var command = new OracleCommand(queryString, connection);
+                    connection.Open();
+                    using (var reader = command.ExecuteReader())
+                    {
+                        if (reader.Read())
+                        {
+                            genre.Id = id.Value;
+                            genre.Name = reader.GetString(0);
+                        }
+                    }
+                }
+
+                return genre;
+            }
+
+            return null;
+        }
+
+        public Country GetCountry(int? id)
+        {
+            if (id.HasValue)
+            {
+                var queryString =
+                    $"select {CreateStringWithSeparator(_columns[TableName.Countries])} from {_tables[TableName.Countries]} where country_id = {id}";
+                var country = new Country();
+
+                using (var connection = new OracleConnection(_connection))
+                {
+                    var command = new OracleCommand(queryString, connection);
+                    connection.Open();
+                    using (var reader = command.ExecuteReader())
+                    {
+                        if (reader.Read())
+                        {
+                            country.Id = id.Value;
+                            country.CountryName = reader.GetString(0);
+                            country.Exist = reader.GetBoolean(1);
+                            country.Capital = reader.GetString(2);
+                        }
+                    }
+                }
+
+                return country;
+            }
+
+            return null;
+        }
+
+        public Author GetAuthor(int? id)
+        {
+            if (id.HasValue)
+            {
+                var queryString =
+                    $"select {CreateStringWithSeparator(_columns[TableName.Authors])} from {_tables[TableName.Authors]} where country_id = {id}";
+                var author = new Author();
+
+                using (var connection = new OracleConnection(_connection))
+                {
+                    var command = new OracleCommand(queryString, connection);
+                    connection.Open();
+                    using (var reader = command.ExecuteReader())
+                    {
+                        if (reader.Read())
+                        {
+                            author.Id = id.Value;
+                            author.FirstName = reader.GetString(0);
+                            author.LastName = reader.GetString(1);
+                            author.DateBirth = reader.GetDateTime(2);
+                            author.DateDeath = reader.GetDateTime(3);
+                            author.CountryId = reader.GetInt32(4);
+                            author.Country = GetCountry(author.CountryId.GetValueOrDefault());
+                            author.Nickname = reader.GetString(5);
+                        }
+                    }
+                }
+
+                return author;
+            }
+
+            return null;
+        }
+
+        public Composition GetComposition(int? id)
+        {
+            if (id.HasValue)
+            {
+                var queryString =
+                    $"select {CreateStringWithSeparator(_columns[TableName.Compositions])} from {_tables[TableName.Compositions]} where composition_id = {id}";
+                var composition = new Composition();
+
+                using (var connection = new OracleConnection(_connection))
+                {
+                    var command = new OracleCommand(queryString, connection);
+                    connection.Open();
+                    using (var reader = command.ExecuteReader())
+                    {
+                        if (reader.Read())
+                        {
+                            composition.Id = id.Value;
+                            composition.Title = reader.GetString(0);
+                            composition.Annotation= reader.GetString(1);
+                            composition.LanguageId = reader.GetDateTime(2);
+                            composition.TypeId = reader.GetDateTime(3);
+                        }
+                    }
+                }
+
+                return author;
+            }
+
+            return null;
         }
         #endregion
 

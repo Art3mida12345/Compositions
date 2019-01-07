@@ -2,7 +2,7 @@
 
 namespace WorkOfFiction.Models
 {
-    public class Type
+    public class Genre
     {
         public int Id { get; set; }
 
