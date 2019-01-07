@@ -5,7 +5,7 @@
         Types,
         Authors,
         Compositions,
-        Genre,
+        Genres,
         Languages,
         Countries
     }

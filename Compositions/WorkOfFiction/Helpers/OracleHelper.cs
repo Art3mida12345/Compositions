@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data.OracleClient;
-using System.Linq;
 using System.Text;
 using WebGrease.Css.Extensions;
 using WorkOfFiction.Enums;
@@ -12,20 +11,43 @@ namespace WorkOfFiction.Helpers
     {
         private readonly Dictionary<TableName, string> _sequences = new Dictionary<TableName, string>
         {
-            {TableName.Types, "types_seq.NEXTVAL" }
+            {TableName.Types, "types_seq.NEXTVAL" },
+            {TableName.Authors, "authors_seq.NEXTVAL" },
+            {TableName.Compositions, "compositions_seq.NEXTVAL" },
+            {TableName.Countries, "countries_seq.NEXTVAL" },
+            {TableName.Languages, "languages_seq.NEXTVAL" },
+            {TableName.Genres, "genre_seq.NEXTVAL" }
         };
         private readonly Dictionary<TableName, string> _headers = new Dictionary<TableName, string>
         {
-            {TableName.Types, "kudriavtseva_types.type_id, kudriavtseva_types.name"}
+            {TableName.Types, "kudriavtseva_types.type_id, kudriavtseva_types.name"},
+            {TableName.Authors, @"kudriavtseva_authors.author_id, kudriavtseva_authors.first_name, kudriavtseva_authors.last_name,
+kudriavtseva_authors.date_birth, kudriavtseva_authors.date_death, kudriavtseva_authors.country_id, kudriavtseva_authors.nickname" },
+            {TableName.Compositions, @"kudriavtseva_compositions.composition_id, kudriavtseva_compositions.title, kudriavtseva_compositions.annotation,
+kudriavtseva_compositions.language_id, kudriavtseva_compositions.type_id"},
+            {TableName.Countries, "kudriavtseva_countries.country_id, kudriavtseva_countries.country_name, kudriavtseva_countries.exist, kudriavtseva_countries.capital"},
+            {TableName.Languages, "kudriavtseva_languages.language_id, kudriavtseva_languages.short_code, kudriavtseva_languages.description"},
+            {TableName.Genres, "kudriavtseva_genres.genre_id, kudriavtseva_genres.name" }
         };
         private readonly Dictionary<TableName, string[]> _columns = new Dictionary<TableName, string[]>
         {
-            { TableName.Types, new [] {"name"} }
+            {TableName.Types, new [] {"name"} },
+            {TableName.Authors, new []{"first_name", "last_name", "date_birth", "date_death", "country_id", "nickname"}},
+            {TableName.Compositions,new []{"title", "annotation", "language_id", "type_id"}},
+            {TableName.Countries, new []{"country_name", "exist", "capital"}},
+            {TableName.Languages, new []{"short_code", "description"}},
+            {TableName.Genres, new []{"name"} }
         };
         private readonly Dictionary<TableName, string> _tables = new Dictionary<TableName, string>
         {
-            {TableName.Types, "kudriavtseva_types" }
+            {TableName.Types, "kudriavtseva_types" },
+            {TableName.Authors, "kudriavtseva_authors"},
+            {TableName.Compositions, "kudriavtseva_compositions"},
+            {TableName.Countries, "kudriavtseva_countries"},
+            {TableName.Languages, "kudriavtseva_languages"},
+            {TableName.Genres, "kudriavtseva_genres"}
         };
+
         #region Connection
         private readonly string _connection =
             "Data Source=" +
@@ -48,6 +70,7 @@ namespace WorkOfFiction.Helpers
                 cmd.ExecuteNonQuery();
             }
         }
+
         public void Update(TableName tableName, params string[] values)
         {
             var setString = CreateStringWithEquals(tableName, values);
@@ -61,6 +84,18 @@ namespace WorkOfFiction.Helpers
                     cmd.CommandText = query;
                     cmd.ExecuteNonQuery();
                 }
+            }
+        }
+
+        public void Delete(TableName tableName, int id)
+        {
+            using (var conn = new OracleConnection(_connection))
+            {
+                conn.Open();
+                var cmd = conn.CreateCommand();
+
+                cmd.CommandText = $"delete from {_tables[tableName]} where {_headers[tableName][0]} = {id}";
+                cmd.ExecuteNonQuery();
             }
         }
         #endregion
