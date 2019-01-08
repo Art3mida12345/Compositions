@@ -105,7 +105,7 @@ kudriavtseva_compositions.language_id, kudriavtseva_compositions.type_id"},
         #region GetAll
         public IEnumerable<Type> GetAllTypes()
         {
-            var queryString = $"select * from {TableName.Types}";
+            var queryString = $"select * from {_tables[TableName.Types]}";
             var types = new List<Type>();
 
             using (var connection = new OracleConnection(_connection))
@@ -402,13 +402,13 @@ kudriavtseva_compositions.language_id, kudriavtseva_compositions.type_id"},
                             composition.Id = id.Value;
                             composition.Title = reader.GetString(0);
                             composition.Annotation= reader.GetString(1);
-                            composition.LanguageId = reader.GetDateTime(2);
-                            composition.TypeId = reader.GetDateTime(3);
+                            composition.LanguageId = reader.GetInt32(2);
+                            composition.TypeId = reader.GetInt32(3);
                         }
                     }
                 }
 
-                return author;
+                return composition;
             }
 
             return null;

@@ -42,15 +42,29 @@ namespace WorkOfFiction.Controllers
             return View(type);
         }
 
-        [HttpGet]
-        public ActionResult Delete(int? id)
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public RedirectToRouteResult Delete(Type type)
         {
-            if (id.HasValue)
+            if (type.Id.HasValue)
             {
-                _oracleHelper.Delete(TableName.Types, id.Value);
+                _oracleHelper.Delete(TableName.Types, type.Id.Value);
             }
 
             return RedirectToAction("Index");
+        }
+
+        [HttpGet]
+        public PartialViewResult Delete(int? id)
+        {
+            var type = _oracleHelper.GetType(id);
+
+            if (type != null)
+            {
+                return PartialView(type);
+            }
+
+            return PartialView("Message", model: "Type not found");
         }
 
         public ViewResult Create()
