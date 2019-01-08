@@ -77,7 +77,7 @@ namespace WorkOfFiction.Controllers
         {
             if (ModelState.IsValid)
             {
-                _oracleHelper.Insert(TableName.Types, type.Name);
+                _oracleHelper.Insert(TableName.Types, type.ToStringExtension(false));
 
                 return RedirectToAction("Index");
             }

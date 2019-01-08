@@ -4,7 +4,7 @@ namespace WorkOfFiction.Models
 {
     public class Language
     {
-        public int Id { get; set; }
+        public int? Id { get; set; }
 
         [MaxLength(2)]
         public string ShortCode { get; set; }

@@ -77,7 +77,7 @@ kudriavtseva_compositions.language_id, kudriavtseva_compositions.type_id"},
                 var valuesString = CreateStringWithSeparator(values);
 
                 cmd.CommandText = $"insert into {_tables[tableName]} ({_headers[tableName]}) " +
-                                  $"values({_sequences[tableName]}, '{valuesString}')";
+                                  $"values({_sequences[tableName]}, {valuesString})";
                 cmd.ExecuteNonQuery();
             }
         }
@@ -248,7 +248,7 @@ kudriavtseva_compositions.language_id, kudriavtseva_compositions.type_id"},
 
         public IEnumerable<Language> GetAllLanguages()
         {
-            var queryString = $"select * from {_tables[TableName.Genres]}";
+            var queryString = $"select * from {_tables[TableName.Languages]}";
             var languages = new List<Language>();
 
             using (var connection = new OracleConnection(_connection))
@@ -323,6 +323,34 @@ kudriavtseva_compositions.language_id, kudriavtseva_compositions.type_id"},
                 }
 
                 return genre;
+            }
+
+            return null;
+        }
+
+        public Language GetLanguage(int? id)
+        {
+            if (id.HasValue)
+            {
+                var queryString = $"select {CreateStringWithSeparator(_columns[TableName.Languages])} from {_tables[TableName.Languages]} where {_keys[TableName.Languages]} = {id}";
+                var language = new Language();
+
+                using (var connection = new OracleConnection(_connection))
+                {
+                    var command = new OracleCommand(queryString, connection);
+                    connection.Open();
+                    using (var reader = command.ExecuteReader())
+                    {
+                        if (reader.Read())
+                        {
+                            language.Id = id.Value;
+                            language.ShortCode = reader.GetString(0);
+                            language.Description = reader.GetString(1);
+                        }
+                    }
+                }
+
+                return language;
             }
 
             return null;

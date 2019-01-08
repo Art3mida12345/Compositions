@@ -4,7 +4,7 @@ namespace WorkOfFiction.Helpers
 {
     public static class StringExtensions
     {
-        public static string[] ToStringExtension(this object obj)
+        public static string[] ToStringExtension(this object obj, bool removeFirst = true)
         {
             var properties = new List<string>();
 
@@ -16,11 +16,18 @@ namespace WorkOfFiction.Helpers
                 }
                 else
                 {
-                    properties.Add(property.GetValue(obj, null).ToString());
+                    var temp = property.GetValue(obj, null);
+                    if (temp != null)
+                    {
+                        properties.Add(temp.ToString());
+                    }
                 }
             }
 
-            properties.RemoveAt(0);
+            if (removeFirst)
+            {
+                properties.RemoveAt(0);
+            }
 
             return properties.ToArray();
         }
