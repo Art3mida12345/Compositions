@@ -18,7 +18,7 @@ namespace WorkOfFiction.Helpers
             {TableName.Compositions, "compositions_seq.NEXTVAL" },
             {TableName.Countries, "countries_seq.NEXTVAL" },
             {TableName.Languages, "languages_seq.NEXTVAL" },
-            {TableName.Genres, "genre_seq.NEXTVAL" }
+            {TableName.Genres, "genres_seq.NEXTVAL" }
         };
         private readonly Dictionary<TableName, string> _headers = new Dictionary<TableName, string>
         {
@@ -49,6 +49,15 @@ kudriavtseva_compositions.language_id, kudriavtseva_compositions.type_id"},
             {TableName.Languages, "kudriavtseva_languages"},
             {TableName.Genres, "kudriavtseva_genres"}
         };
+        private readonly Dictionary<TableName, string> _keys = new Dictionary<TableName, string>
+        {
+            {TableName.Types, "kudriavtseva_types.type_id" },
+            {TableName.Authors, "kudriavtseva_authors.author_id"},
+            {TableName.Compositions, "kudriavtseva_compositions.composition_id"},
+            {TableName.Countries, "kudriavtseva_countries.country_id"},
+            {TableName.Languages, "kudriavtseva_languages.language_id"},
+            {TableName.Genres, "kudriavtseva_genres.genre_id"}
+        };
 
         #region Connection
         private readonly string _connection =
@@ -67,7 +76,7 @@ kudriavtseva_compositions.language_id, kudriavtseva_compositions.type_id"},
                 var cmd = conn.CreateCommand();
                 var valuesString = CreateStringWithSeparator(values);
 
-                cmd.CommandText = $"insert into kudriavtseva_types ({_headers[tableName]}) " +
+                cmd.CommandText = $"insert into {_tables[tableName]} ({_headers[tableName]}) " +
                                   $"values({_sequences[tableName]}, '{valuesString}')";
                 cmd.ExecuteNonQuery();
             }
@@ -96,7 +105,7 @@ kudriavtseva_compositions.language_id, kudriavtseva_compositions.type_id"},
                 conn.Open();
                 var cmd = conn.CreateCommand();
 
-                cmd.CommandText = $"delete from {_tables[tableName]} where {_headers[tableName][0]} = {id}";
+                cmd.CommandText = $"delete from {_tables[tableName]} where {_keys[tableName]} = {id}";
                 cmd.ExecuteNonQuery();
             }
         }

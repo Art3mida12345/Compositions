@@ -1,4 +1,4 @@
-﻿@model WorkOfFiction.Models.Type
+﻿@model WorkOfFiction.Models.Genre
 
 @{
     Layout = null;
@@ -7,10 +7,10 @@
 <div class="modal-content">
     <div class="modal-header">
         <button class="close" data-dismiss="modal" area-hidden="true">X</button>
-        <h4>Delete type - "@Model.Name"</h4>
+        <h4>Delete genre - "@Model.Name"</h4>
     </div>
     <div class="modal-body">
-        @using (Html.BeginForm("Delete", "Type"))
+        @using (Html.BeginForm("Delete", "Genre"))
         {
             @Html.AntiForgeryToken()
             @Html.HiddenFor(model => model.Id)
