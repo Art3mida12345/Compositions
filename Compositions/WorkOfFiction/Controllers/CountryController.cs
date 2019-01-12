@@ -1,4 +1,5 @@
 ﻿using System.Web.Mvc;
+using WorkOfFiction.Models;
 using WorkOfFiction.Services;
 
 namespace WorkOfFiction.Controllers
@@ -17,6 +18,70 @@ namespace WorkOfFiction.Controllers
             var countries = _countryService.GetAllCountries();
 
             return View(countries);
+        }
+
+        public ActionResult Edit(int? id)
+        {
+            var country = id.HasValue ? _countryService.GetCountry(id.Value) : new Country();
+
+            return View(country);
+        }
+
+        [HttpPost]
+        public ActionResult Edit(Country country)
+        {
+            if (ModelState.IsValid)
+            {
+                _countryService.Update(country);
+
+                return RedirectToAction("Index");
+            }
+
+            return View(country);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public RedirectToRouteResult Delete(Genre genre)
+        {
+            if (genre.Id.HasValue)
+            {
+                _countryService.Delete(genre.Id.Value);
+            }
+
+            return RedirectToAction("Index");
+        }
+
+        [HttpGet]
+        public PartialViewResult Delete(int? id)
+        {
+            var country = _countryService.GetCountry(id);
+
+            if (country != null)
+            {
+                return PartialView(country);
+            }
+
+            return PartialView("Message", model: "Country not found");
+        }
+
+        public ViewResult Create()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public ActionResult Create(Country country)
+        {
+
+            if (ModelState.IsValid)
+            {
+                _countryService.Insert(country);
+
+                return RedirectToAction("Index");
+            }
+
+            return View(country);
         }
     }
 }

@@ -21,7 +21,7 @@ namespace WorkOfFiction.Helpers
         #region CUD
         public void Insert(TableName tableName, params string[] values)
         {
-            using (var conn = new OracleConnection())
+            using (var conn = new OracleConnection(Connection))
             {
                 conn.Open();
                 var cmd = conn.CreateCommand();
@@ -33,18 +33,21 @@ namespace WorkOfFiction.Helpers
             }
         }
 
-        public void Update(TableName tableName, params string[] values)
+        public void Update(TableName tableName, int? id, params string[] values)
         {
-            var setString = StringHelper.CreateStringWithEquals(tableName, values);
-            if (!string.IsNullOrEmpty(setString))
+            if (id.HasValue)
             {
-                using (var conn = new OracleConnection(Connection))
+                var setString = StringHelper.CreateStringWithEquals(tableName, values);
+                if (!string.IsNullOrEmpty(setString))
                 {
-                    conn.Open();
-                    var cmd = conn.CreateCommand();
-                    var query = $"update {Tables[tableName]} set {setString}";
-                    cmd.CommandText = query;
-                    cmd.ExecuteNonQuery();
+                    using (var conn = new OracleConnection(Connection))
+                    {
+                        conn.Open();
+                        var cmd = conn.CreateCommand();
+                        var query = $"update {Tables[tableName]} set {setString} where {Keys[tableName]} = {id.Value}";
+                        cmd.CommandText = query;
+                        cmd.ExecuteNonQuery();
+                    }
                 }
             }
         }

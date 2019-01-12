@@ -39,12 +39,12 @@ namespace WorkOfFiction.Services
 
         public void Insert(Genre genre)
         {
-            _oracleHelper.Insert(TableName.Genres, genre.ToStringExtension(false));
+            _oracleHelper.Insert(TableName.Genres, genre.ToStringExtension());
         }
 
         public void Update(Genre genre)
         {
-            _oracleHelper.Update(TableName.Genres, genre.ToStringExtension());
+            _oracleHelper.Update(TableName.Genres, genre.Id, genre.ToStringExtension());
         }
 
         public void Delete(int genreId)

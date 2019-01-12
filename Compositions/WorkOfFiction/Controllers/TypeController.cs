@@ -34,7 +34,7 @@ namespace WorkOfFiction.Controllers
         {
             if (ModelState.IsValid)
             {
-                _oracleHelper.Update(TableName.Types, type.ToStringExtension());
+                _oracleHelper.Update(TableName.Types, type.Id, type.ToStringExtension());
 
                 return RedirectToAction("Index");
             }
