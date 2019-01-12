@@ -18,8 +18,7 @@ namespace WorkOfFiction.Services
 
         public bool CheckIfAlreadyExist(Genre genre)
         {
-            var queryString = $"select 1 from {Tables[TableName.Genres]} where name = {genre.Name}";
-            var countries = new List<Country>();
+            var queryString = $"select 1 from {Tables[TableName.Genres]} where name = '{genre.Name}'";
 
             using (var connection = new OracleConnection(_oracleHelper.Connection))
             {
@@ -27,14 +26,9 @@ namespace WorkOfFiction.Services
                 connection.Open();
                 using (var reader = command.ExecuteReader())
                 {
-                    if (reader.Read())
-                    {
-
-                    }
+                    return reader.HasRows;
                 }
             }
-
-            return false;
         }
 
         public void Insert(Genre genre)
