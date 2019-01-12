@@ -79,6 +79,14 @@ namespace WorkOfFiction.Services
             _oracleHelper.Insert(TableName.Countries, country.ToStringExtension(false));
         }
 
-        public void CheckUniq
+        public bool CheckIfAlreadyExist(Country country)
+        {
+            return true;
+        }
+
+        public void Update(Country country)
+        {
+            _oracleHelper.Update(TableName.Countries, country.ToStringExtension());
+        }
     }
 }
