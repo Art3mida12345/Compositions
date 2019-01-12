@@ -114,6 +114,27 @@ namespace WorkOfFiction.Services
             Execute(query);
         }
 
+        public bool Delete(int id)
+        {
+            try
+            {
+                var query =
+                    $"delete from kudriavtseva_comps_authors where kudriavtseva_comps_authors.composition_id = {id}";
+                Execute(query);
+
+                query = $"delete from kudriavtseva_comps_genres where kudriavtseva_comps_genres.composition_id = {id}";
+                Execute(query);
+
+                _oracleHelper.Delete(TableName.Compositions, id);
+
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
+        }
+
         private int GetLastIndex()
         {
             using (var connection = new OracleConnection(_oracleHelper.Connection))
