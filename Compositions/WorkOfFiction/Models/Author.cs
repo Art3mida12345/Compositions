@@ -5,7 +5,7 @@ namespace WorkOfFiction.Models
 {
     public class Author
     {
-        public int Id { get; set; }
+        public int? Id { get; set; }
 
         [MaxLength(127)]
         public string FirstName { get; set; }
