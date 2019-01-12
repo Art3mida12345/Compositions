@@ -2,16 +2,20 @@
 using WorkOfFiction.Enums;
 using WorkOfFiction.Helpers;
 using WorkOfFiction.Models;
+using WorkOfFiction.Services;
 
 namespace WorkOfFiction.Controllers
 {
     public class GenreController : Controller
     {
         private readonly OracleHelper _oracleHelper;
+        private readonly GenreService _genreService;
+
 
         public GenreController()
         {
             _oracleHelper = new OracleHelper();
+            _genreService = new GenreService();
         }
 
         public ActionResult Index()
@@ -74,6 +78,7 @@ namespace WorkOfFiction.Controllers
         [HttpPost]
         public ActionResult Create(Genre genre)
         {
+            
             if (ModelState.IsValid)
             {
                 _oracleHelper.Insert(TableName.Genres, genre.ToStringExtension(false));
