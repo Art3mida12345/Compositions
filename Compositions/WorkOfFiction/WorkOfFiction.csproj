@@ -171,6 +171,7 @@
     <Compile Include="Services\AuthorService.cs" />
     <Compile Include="Services\GenreService.cs" />
     <Compile Include="Services\CountryService.cs" />
+    <Compile Include="Services\LanguageService.cs" />
     <Compile Include="Services\TypeService.cs" />
   </ItemGroup>
   <ItemGroup>
