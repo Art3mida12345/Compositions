@@ -1,14 +1,10 @@
-﻿@using System.Web.UI.WebControls
-@using WorkOfFiction.Models
+﻿@using WorkOfFiction.Models
 @model CompositionFilter
-@{
-    ViewBag.Title = "Filter";
-}
 
 <h2>Filter</h2>
 
 
-@using (Html.BeginForm("Filter", "Composition", FormMethod.Get))
+@using (Html.BeginForm("Index", "Composition", FormMethod.Get))
 {
     @Html.Partial("_checkBoxPicker", model: Model.Genres, 
         viewData: new ViewDataDictionary { { "Name", "genre" }, { "FormInputName", "SelectedGenres" }, { "NamePlural", "Genres"} })
@@ -22,5 +18,5 @@
     @Html.Partial("_checkBoxPicker", model: Model.Langs, 
         viewData: new ViewDataDictionary { { "Name", "lang" }, { "FormInputName", "SelectedLangs" }, { "NamePlural", "Langs"} })
 
-    <button type="submit">Apply</button>
+    <button type="submit" class ="btn btn-success">Apply</button>
 }

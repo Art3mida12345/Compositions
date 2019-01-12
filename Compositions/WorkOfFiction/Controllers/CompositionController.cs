@@ -31,11 +31,14 @@ namespace WorkOfFiction.Controllers
             _filterService = filterService;
         }
 
-        public ActionResult Index()
+        public ActionResult Index(CompositionFilter filter)
         {
-            var compositions = _compositionService.GetAllCompositions();
+            var filteredCompositions = _filterService.ApplyFilter(filter);
 
-            return View(compositions);
+            InitializeFilterModel(filter);
+            ViewBag.Filter = filter;
+
+            return View(filteredCompositions);
         }
 
         public ViewResult Create()
@@ -64,17 +67,6 @@ namespace WorkOfFiction.Controllers
             }
 
             return View(composition);
-        }
-
-        [HttpGet]
-        public ActionResult Filter(CompositionFilter filter)
-        {
-            var filteredCompositions = _filterService.ApplyFilter(filter);
-
-            InitializeFilterModel(filter);
-
-            return View(filter);
-
         }
 
         [HttpPost]
