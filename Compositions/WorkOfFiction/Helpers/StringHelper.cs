@@ -29,14 +29,13 @@ namespace WorkOfFiction.Helpers
             if (DbDictionaries.Columns[tableName].Length == values.Length)
             {
                 var stringBuilder = new StringBuilder();
-                DbDictionaries.Columns[tableName].ForEach(value => values.ForEach(v =>
-                    {
-                        stringBuilder.Append(value);
+                for (var i = 0; i < DbDictionaries.Columns[tableName].Length; i++)
+                {
+                        stringBuilder.Append(DbDictionaries.Columns[tableName][i]);
                         stringBuilder.Append(" = ");
-                        stringBuilder.Append(v);
+                        stringBuilder.Append(values[i]);
                         stringBuilder.Append(", ");
-                    }
-                ));
+                }
 
                 return stringBuilder.ToString(0, stringBuilder.Length - 2);
             }

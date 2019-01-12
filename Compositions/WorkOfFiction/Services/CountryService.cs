@@ -63,7 +63,7 @@ namespace WorkOfFiction.Services
                         {
                             country.Id = id.Value;
                             country.CountryName = reader.GetString(0);
-                            country.Exist = Convert.ToBoolean(reader.GetBoolean(1));
+                            country.Exist = Convert.ToBoolean(reader.GetInt32(1));
                             country.Capital = reader.GetString(2);
                         }
                     }
@@ -80,14 +80,9 @@ namespace WorkOfFiction.Services
             _oracleHelper.Insert(TableName.Countries, country.ToStringExtension());
         }
 
-        public bool CheckIfAlreadyExist(Country country)
-        {
-            return true;
-        }
-
         public void Update(Country country)
         {
-            _oracleHelper.Update(TableName.Countries, country.Id, country.ToStringExtension(false));
+            _oracleHelper.Update(TableName.Countries, country.Id, country.ToStringExtension());
         }
 
         public void Delete(int id)
