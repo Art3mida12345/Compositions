@@ -147,6 +147,7 @@
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
+    <Compile Include="Controllers\AuthorController.cs" />
     <Compile Include="Controllers\CountryController.cs" />
     <Compile Include="Controllers\GenreController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
@@ -167,6 +168,7 @@
     <Compile Include="Models\Type.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Enums\TableName.cs" />
+    <Compile Include="Services\AuthorService.cs" />
     <Compile Include="Services\GenreService.cs" />
     <Compile Include="Services\CountryService.cs" />
     <Compile Include="Services\TypeService.cs" />
@@ -220,6 +222,8 @@
     <Content Include="Views\Language\Edit.cshtml" />
     <Content Include="Views\Language\Delete.cshtml" />
     <Content Include="Views\Country\Index.cshtml" />
+    <Content Include="Views\Author\Index.cshtml" />
+    <Content Include="Views\Author\Edit.cshtml" />
     <Content Include="Views\Country\Edit.cshtml" />
     <Content Include="Views\Country\Delete.cshtml" />
     <Content Include="Views\Country\Create.cshtml" />

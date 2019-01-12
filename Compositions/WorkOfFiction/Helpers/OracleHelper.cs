@@ -88,34 +88,7 @@ namespace WorkOfFiction.Helpers
 
     
 
-        public IEnumerable<Author> GetAllAuthors()
-        {
-            var queryString = $"select * from {Tables[TableName.Authors]}";
-            var authors = new List<Author>();
 
-            using (var connection = new OracleConnection(Connection))
-            {
-                var command = new OracleCommand(queryString, connection);
-                connection.Open();
-                using (var reader = command.ExecuteReader())
-                {
-                    while (reader.Read())
-                    {
-                        authors.Add(new Author
-                        {
-                            Id = reader.GetInt32(0),
-                            FirstName = reader.GetString(1),
-                            LastName = reader.GetString(2),
-                            DateBirth = reader.GetDateTime(3),
-                            CountryId = reader.GetInt32(4),
-                            Nickname = reader.GetString(5)
-                        });
-                    }
-                }
-            }
-
-            return authors;
-        }
 
         public IEnumerable<Composition> GetAllCompositions()
         {
@@ -208,39 +181,7 @@ namespace WorkOfFiction.Helpers
             return null;
         }
 
-        public Author GetAuthor(int? id)
-        {
-            if (id.HasValue)
-            {
-                var queryString =
-                    $"select {StringHelper.CreateStringWithSeparator(Columns[TableName.Authors])} from {Tables[TableName.Authors]} where country_id = {id}";
-                var author = new Author();
-
-                using (var connection = new OracleConnection(Connection))
-                {
-                    var command = new OracleCommand(queryString, connection);
-                    connection.Open();
-                    using (var reader = command.ExecuteReader())
-                    {
-                        if (reader.Read())
-                        {
-                            author.Id = id.Value;
-                            author.FirstName = reader.GetString(0);
-                            author.LastName = reader.GetString(1);
-                            author.DateBirth = reader.GetDateTime(2);
-                            author.DateDeath = reader.GetDateTime(3);
-                            author.CountryId = reader.GetInt32(4);
-                            //author.Country = GetCountry(author.CountryId.GetValueOrDefault());
-                            author.Nickname = reader.GetString(5);
-                        }
-                    }
-                }
-
-                return author;
-            }
-
-            return null;
-        }
+        
 
         public Composition GetComposition(int? id)
         {
