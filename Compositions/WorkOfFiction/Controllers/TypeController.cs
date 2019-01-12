@@ -35,9 +35,14 @@ namespace WorkOfFiction.Controllers
         {
             if (ModelState.IsValid)
             {
-                _typeService.Update(type);
+                var alreadyEXist = _typeService.CheckIfAlreadyExist(type);
+                if (!alreadyEXist)
+                {
+                    _typeService.Update(type);
+                    return RedirectToAction("Index");
+                }
+                ModelState.AddModelError("Name", $"Type with name {type.Name} already exists");                
 
-                return RedirectToAction("Index");
             }
 
             return View(type);
@@ -78,9 +83,16 @@ namespace WorkOfFiction.Controllers
         {
             if (ModelState.IsValid)
             {
-                _typeService.Insert(type);
+                var alreadyEXist = _typeService.CheckIfAlreadyExist(type);
+                if (!alreadyEXist)
+                {
+                    _typeService.Insert(type);
 
-                return RedirectToAction("Index");
+                    return RedirectToAction("Index");
+                }
+
+                ModelState.AddModelError("Name", $"Type with name {type.Name} already exists");                
+
             }
 
             return View(type);
