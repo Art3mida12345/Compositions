@@ -69,7 +69,7 @@ namespace WorkOfFiction.Helpers
 
         public bool CheckIfAlreadyExist(TableName tableName, string columnName, string columnValue)
         {
-            var queryString = $"select 1 from {Tables[TableName.Genres]} where {columnName} = '{columnValue}'";
+            var queryString = $"select 1 from {Tables[tableName]} where {columnName} = '{columnValue}'";
 
             using (var connection = new OracleConnection(Connection))
             {
@@ -85,10 +85,6 @@ namespace WorkOfFiction.Helpers
         #endregion
 
         #region GetAll
-
-    
-
-
 
         public IEnumerable<Composition> GetAllCompositions()
         {
@@ -117,71 +113,9 @@ namespace WorkOfFiction.Helpers
 
             return compositions;
         }
-
-
-        public IEnumerable<Language> GetAllLanguages()
-        {
-            var queryString = $"select * from {Tables[TableName.Languages]}";
-            var languages = new List<Language>();
-
-            using (var connection = new OracleConnection(Connection))
-            {
-                var command = new OracleCommand(queryString, connection);
-                connection.Open();
-                using (var reader = command.ExecuteReader())
-                {
-                    while (reader.Read())
-                    {
-                        languages.Add(new Language
-                        {
-                            Id = reader.GetInt32(0),
-                            ShortCode = reader.GetString(1),
-                            Description = reader.GetString(2)
-                        });
-                    }
-                }
-            }
-
-            return languages;
-        }
-
         #endregion
 
         #region GetOne
-
-   
-
-
-        public Language GetLanguage(int? id)
-        {
-            if (id.HasValue)
-            {
-                var queryString =
-                    $"select {StringHelper.CreateStringWithSeparator(Columns[TableName.Languages])} from {Tables[TableName.Languages]} where {Keys[TableName.Languages]} = {id}";
-                var language = new Language();
-
-                using (var connection = new OracleConnection(Connection))
-                {
-                    var command = new OracleCommand(queryString, connection);
-                    connection.Open();
-                    using (var reader = command.ExecuteReader())
-                    {
-                        if (reader.Read())
-                        {
-                            language.Id = id.Value;
-                            language.ShortCode = reader.GetString(0);
-                            language.Description = reader.GetString(1);
-                        }
-                    }
-                }
-
-                return language;
-            }
-
-            return null;
-        }
-
-        
 
         public Composition GetComposition(int? id)
         {

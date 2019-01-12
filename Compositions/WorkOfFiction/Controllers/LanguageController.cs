@@ -2,30 +2,30 @@
 using WorkOfFiction.Enums;
 using WorkOfFiction.Helpers;
 using WorkOfFiction.Models;
+using WorkOfFiction.Services;
 
 namespace WorkOfFiction.Controllers
 {
-    //TODO: REMINDER: add constraint uniq to all fields such names and short code
     public class LanguageController : Controller
     {
-        private readonly OracleHelper _oracleHelper;
+        private readonly LanguageService _languageService;
 
-        public LanguageController()
+        public LanguageController(LanguageService languageService)
         {
-            _oracleHelper = new OracleHelper();
+            _languageService = languageService;
         }
 
         // GET: Genre
         public ActionResult Index()
         {
-            var languages = _oracleHelper.GetAllLanguages();
+            var languages = _languageService.GetAllLanguages();
 
             return View(languages);
         }
 
         public ActionResult Edit(int? id)
         {
-            var language = id.HasValue ? _oracleHelper.GetLanguage(id.Value) : new Language();
+            var language = id.HasValue ? _languageService.GetLanguage(id.Value) : new Language();
 
             return View(language);
         }
@@ -35,7 +35,7 @@ namespace WorkOfFiction.Controllers
         {
             if (ModelState.IsValid)
             {
-                _oracleHelper.Update(TableName.Languages, language.Id, language.ToStringExtension());
+                _languageService.Update(language);
 
                 return RedirectToAction("Index");
             }
@@ -49,7 +49,7 @@ namespace WorkOfFiction.Controllers
         {
             if (language.Id.HasValue)
             {
-                _oracleHelper.Delete(TableName.Languages, language.Id.Value);
+                _languageService.Delete(language.Id.Value);
             }
 
             return RedirectToAction("Index");
@@ -58,7 +58,7 @@ namespace WorkOfFiction.Controllers
         [HttpGet]
         public ActionResult Delete(int? id)
         {
-            var language = _oracleHelper.GetLanguage(id);
+            var language = _languageService.GetLanguage(id);
 
             if (language != null)
             {
@@ -78,9 +78,15 @@ namespace WorkOfFiction.Controllers
         {
             if (ModelState.IsValid)
             {
-                _oracleHelper.Insert(TableName.Languages, language.ToStringExtension(false));
+                var alreadyExist = _languageService.CheckIfAlreadyExist(language);
+                if (!alreadyExist)
+                {
+                    _languageService.Insert(language);
 
-                return RedirectToAction("Index");
+                    return RedirectToAction("Index");
+                }
+
+                ModelState.AddModelError("Name", $"Genre with name {language.Description} already exists");
             }
 
             return View(language);
