@@ -151,7 +151,6 @@
     <Compile Include="Controllers\CompositionController.cs" />
     <Compile Include="Controllers\CountryController.cs" />
     <Compile Include="Controllers\GenreController.cs" />
-    <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\LanguageController.cs" />
     <Compile Include="Controllers\TypeController.cs" />
     <Compile Include="Global.asax.cs">
@@ -175,6 +174,7 @@
     <Compile Include="Services\CountryService.cs" />
     <Compile Include="Services\LanguageService.cs" />
     <Compile Include="Services\TypeService.cs" />
+    <Compile Include="ViewModels\AuthorViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\bootstrap-theme.css" />
@@ -211,7 +211,6 @@
     <Content Include="Views\Shared\Error.cshtml" />
     <Content Include="Views\Shared\_Layout.cshtml" />
     <Content Include="Views\Type\Index.cshtml" />
-    <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Views\Type\Create.cshtml" />
     <Content Include="Views\Type\Edit.cshtml" />
     <Content Include="Views\Shared\Message.cshtml" />
@@ -234,6 +233,7 @@
     <Content Include="Views\Author\Details.cshtml" />
     <Content Include="Views\Composition\Index.cshtml" />
     <Content Include="Views\Author\Delete.cshtml" />
+    <Content Include="Views\Composition\Create.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

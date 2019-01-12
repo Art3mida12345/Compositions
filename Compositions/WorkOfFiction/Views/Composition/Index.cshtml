@@ -24,7 +24,7 @@
             @Html.DisplayFor(modelItem => item.Title)
         </td>
         <td>
-            @Html.TextAreaFor(modelItem => item.Annotation)
+            @Html.DisplayFor(modelItem => item.Annotation)
         </td>
         <td>
             @Html.ActionLink("Edit", "Edit", new { id = item.Id }, new { @class = "btn btn-primary" }) |
