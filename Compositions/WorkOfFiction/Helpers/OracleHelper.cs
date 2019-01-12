@@ -29,8 +29,8 @@ namespace WorkOfFiction.Helpers
                 var cmd = conn.CreateCommand();
                 var valuesString = CreateStringWithSeparator(values);
 
-                cmd.CommandText = $"insert into {_tables[tableName]} ({_headers[tableName]}) " +
-                                  $"values({_sequences[tableName]}, {valuesString})";
+                cmd.CommandText = $"insert into {Tables[tableName]} ({Headers[tableName]}) " +
+                                  $"values({Sequences[tableName]}, {valuesString})";
                 cmd.ExecuteNonQuery();
             }
         }
@@ -44,7 +44,7 @@ namespace WorkOfFiction.Helpers
                 {
                     conn.Open();
                     var cmd = conn.CreateCommand();
-                    var query = $"update {_tables[tableName]} set {setString}";
+                    var query = $"update {Tables[tableName]} set {setString}";
                     cmd.CommandText = query;
                     cmd.ExecuteNonQuery();
                 }
@@ -58,7 +58,7 @@ namespace WorkOfFiction.Helpers
                 conn.Open();
                 var cmd = conn.CreateCommand();
 
-                cmd.CommandText = $"delete from {_tables[tableName]} where {_keys[tableName]} = {id}";
+                cmd.CommandText = $"delete from {Tables[tableName]} where {Keys[tableName]} = {id}";
                 cmd.ExecuteNonQuery();
             }
         }
@@ -67,7 +67,7 @@ namespace WorkOfFiction.Helpers
         #region GetAll
         public IEnumerable<Type> GetAllTypes()
         {
-            var queryString = $"select * from {_tables[TableName.Types]}";
+            var queryString = $"select * from {Tables[TableName.Types]}";
             var types = new List<Type>();
 
             using (var connection = new OracleConnection(Connection))
@@ -92,7 +92,7 @@ namespace WorkOfFiction.Helpers
 
         public IEnumerable<Author> GetAllAuthors()
         {
-            var queryString = $"select * from {_tables[TableName.Authors]}";
+            var queryString = $"select * from {Tables[TableName.Authors]}";
             var authors = new List<Author>();
 
             using (var connection = new OracleConnection(Connection))
@@ -121,7 +121,7 @@ namespace WorkOfFiction.Helpers
 
         public IEnumerable<Composition> GetAllCompositions()
         {
-            var queryString = $"select * from {_tables[TableName.Compositions]}";
+            var queryString = $"select * from {Tables[TableName.Compositions]}";
             var compositions = new List<Composition>();
 
             using (var connection = new OracleConnection(Connection))
@@ -147,36 +147,9 @@ namespace WorkOfFiction.Helpers
             return compositions;
         }
 
-        public IEnumerable<Country> GetAllCountries()
-        {
-            var queryString = $"select * from {_tables[TableName.Countries]}";
-            var countries = new List<Country>();
-
-            using (var connection = new OracleConnection(Connection))
-            {
-                var command = new OracleCommand(queryString, connection);
-                connection.Open();
-                using (var reader = command.ExecuteReader())
-                {
-                    while (reader.Read())
-                    {
-                        countries.Add(new Country
-                        {
-                            Id = reader.GetInt32(0),
-                            CountryName = reader.GetString(1),
-                            Exist = reader.GetBoolean(2),
-                            Capital = reader.GetString(3)
-                        });
-                    }
-                }
-            }
-
-            return countries;
-        }
-
         public IEnumerable<Genre> GetAllGenres()
         {
-            var queryString = $"select * from {_tables[TableName.Genres]}";
+            var queryString = $"select * from {Tables[TableName.Genres]}";
             var genres = new List<Genre>();
 
             using (var connection = new OracleConnection(Connection))
@@ -201,7 +174,7 @@ namespace WorkOfFiction.Helpers
 
         public IEnumerable<Language> GetAllLanguages()
         {
-            var queryString = $"select * from {_tables[TableName.Languages]}";
+            var queryString = $"select * from {Tables[TableName.Languages]}";
             var languages = new List<Language>();
 
             using (var connection = new OracleConnection(Connection))
@@ -258,7 +231,7 @@ namespace WorkOfFiction.Helpers
         {
             if (id.HasValue)
             {
-                var queryString = $"select name from {_tables[TableName.Genres]} where genre_id = {id}";
+                var queryString = $"select name from {Tables[TableName.Genres]} where genre_id = {id}";
                 var genre = new Genre();
 
                 using (var connection = new OracleConnection(Connection))
@@ -285,7 +258,7 @@ namespace WorkOfFiction.Helpers
         {
             if (id.HasValue)
             {
-                var queryString = $"select {CreateStringWithSeparator(_columns[TableName.Languages])} from {_tables[TableName.Languages]} where {_keys[TableName.Languages]} = {id}";
+                var queryString = $"select {CreateStringWithSeparator(Columns[TableName.Languages])} from {Tables[TableName.Languages]} where {Keys[TableName.Languages]} = {id}";
                 var language = new Language();
 
                 using (var connection = new OracleConnection(Connection))
@@ -314,7 +287,7 @@ namespace WorkOfFiction.Helpers
             if (id.HasValue)
             {
                 var queryString =
-                    $"select {CreateStringWithSeparator(_columns[TableName.Countries])} from {_tables[TableName.Countries]} where country_id = {id}";
+                    $"select {CreateStringWithSeparator(Columns[TableName.Countries])} from {Tables[TableName.Countries]} where country_id = {id}";
                 var country = new Country();
 
                 using (var connection = new OracleConnection(Connection))
@@ -344,7 +317,7 @@ namespace WorkOfFiction.Helpers
             if (id.HasValue)
             {
                 var queryString =
-                    $"select {CreateStringWithSeparator(_columns[TableName.Authors])} from {_tables[TableName.Authors]} where country_id = {id}";
+                    $"select {CreateStringWithSeparator(Columns[TableName.Authors])} from {Tables[TableName.Authors]} where country_id = {id}";
                 var author = new Author();
 
                 using (var connection = new OracleConnection(Connection))
@@ -378,7 +351,7 @@ namespace WorkOfFiction.Helpers
             if (id.HasValue)
             {
                 var queryString =
-                    $"select {CreateStringWithSeparator(_columns[TableName.Compositions])} from {_tables[TableName.Compositions]} where composition_id = {id}";
+                    $"select {CreateStringWithSeparator(Columns[TableName.Compositions])} from {Tables[TableName.Compositions]} where composition_id = {id}";
                 var composition = new Composition();
 
                 using (var connection = new OracleConnection(Connection))
@@ -426,10 +399,10 @@ namespace WorkOfFiction.Helpers
 
         private string CreateStringWithEquals(TableName tableName, params string[] values)
         {
-            if (_columns[tableName].Length == values.Length)
+            if (Columns[tableName].Length == values.Length)
             {
                 var stringBuilder = new StringBuilder();
-                _columns[tableName].ForEach(value => values.ForEach(v =>
+                Columns[tableName].ForEach(value => values.ForEach(v =>
                     {
                         stringBuilder.Append(value);
                         stringBuilder.Append(" = ");

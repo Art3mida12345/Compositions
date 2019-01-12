@@ -5,7 +5,7 @@ namespace WorkOfFiction.Helpers
 {
     public static class DbDictionaries
     {
-        public static readonly Dictionary<TableName, string> _sequences = new Dictionary<TableName, string>
+        public static readonly Dictionary<TableName, string> Sequences = new Dictionary<TableName, string>
         {
             {TableName.Types, "types_seq.NEXTVAL"},
             {TableName.Authors, "authors_seq.NEXTVAL"},
@@ -15,7 +15,7 @@ namespace WorkOfFiction.Helpers
             {TableName.Genres, "genres_seq.NEXTVAL"}
         };
 
-        public static readonly Dictionary<TableName, string> _headers = new Dictionary<TableName, string>
+        public static readonly Dictionary<TableName, string> Headers = new Dictionary<TableName, string>
         {
             {TableName.Types, "kudriavtseva_types.type_id, kudriavtseva_types.name"},
             {
@@ -39,7 +39,7 @@ kudriavtseva_compositions.language_id, kudriavtseva_compositions.type_id"
             {TableName.Genres, "kudriavtseva_genres.genre_id, kudriavtseva_genres.name"}
         };
 
-        public static Dictionary<TableName, string[]> _columns = new Dictionary<TableName, string[]>
+        public static readonly Dictionary<TableName, string[]> Columns = new Dictionary<TableName, string[]>
         {
             {TableName.Types, new[] {"name"}},
             {
@@ -52,7 +52,7 @@ kudriavtseva_compositions.language_id, kudriavtseva_compositions.type_id"
             {TableName.Genres, new[] {"name"}}
         };
 
-        public static readonly Dictionary<TableName, string> _tables = new Dictionary<TableName, string>
+        public static readonly Dictionary<TableName, string> Tables = new Dictionary<TableName, string>
         {
             {TableName.Types, "kudriavtseva_types"},
             {TableName.Authors, "kudriavtseva_authors"},
@@ -62,7 +62,7 @@ kudriavtseva_compositions.language_id, kudriavtseva_compositions.type_id"
             {TableName.Genres, "kudriavtseva_genres"}
         };
 
-        public static readonly Dictionary<TableName, string> _keys = new Dictionary<TableName, string>
+        public static readonly Dictionary<TableName, string> Keys = new Dictionary<TableName, string>
         {
             {TableName.Types, "kudriavtseva_types.type_id"},
             {TableName.Authors, "kudriavtseva_authors.author_id"},

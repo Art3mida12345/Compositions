@@ -20,7 +20,7 @@ namespace WorkOfFiction.Services
 
         public bool CheckIfAlreadyExist(Genre genre)
         {
-            var queryString = $"select 1 from {_tables[TableName.Genres]} where name = {genre.Name}";
+            var queryString = $"select 1 from {Tables[TableName.Genres]} where name = {genre.Name}";
             var countries = new List<Country>();
 
             using (var connection = new OracleConnection(_oracleHelper.Connection))
