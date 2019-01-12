@@ -109,5 +109,39 @@ namespace WorkOfFiction.Services
 
             return null;
         }
+
+        public IEnumerable<Author> GetByComposition(int id)
+        {
+            var queryString = $@"select kudriavtseva_authors.* from
+kudriavtseva_authors
+inner join kudriavtseva_comps_authors on kudriavtseva_comps_authors.author_id = kudriavtseva_authors.author_id
+inner join kudriavtseva_compositions on kudriavtseva_compositions.composition_id = kudriavtseva_comps_authors.composition_id
+where kudriavtseva_compositions.composition_id ={id}";
+            var authors = new List<Author>();
+
+            using (var connection = new OracleConnection(_oracleHelper.Connection))
+            {
+                var command = new OracleCommand(queryString, connection);
+                connection.Open();
+                using (var reader = command.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        authors.Add(new Author
+                        {
+                            Id = reader.GetInt32(0),
+                            FirstName = reader.GetString(1),
+                            LastName = reader.GetString(2),
+                            DateBirth = reader.GetDateTime(3),
+                            DateDeath = reader.GetDateTime(4),
+                            CountryId = reader.GetInt32(5),
+                            Nickname = reader.GetString(6)
+                        });
+                    }
+                }
+            }
+
+            return authors;
+        }
     }
 }
