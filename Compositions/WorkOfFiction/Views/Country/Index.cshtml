@@ -1,0 +1,54 @@
+﻿@model IEnumerable<WorkOfFiction.Models.Country>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Countries</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create", null, new { @class = "btn btn-success" })
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Id)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.CountryName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Exist)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Capital)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.Id)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.CountryName)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Exist)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Capital)
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { id = item.Id }, new { @class = "btn btn-primary" }) |
+            @Html.ActionLink("Delete", "Delete", new { id = item.Id }, new { @class = "modal-item btn btn-danger" })
+        </td>
+    </tr>
+}
+
+</table>
+
+<div id="modDialog" class="modal fade">
+    <div id="dialogContent" class="modal-dialog"></div>
+</div>

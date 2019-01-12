@@ -1,21 +1,22 @@
 ﻿using System.Web.Mvc;
-using WorkOfFiction.Helpers;
+using WorkOfFiction.Services;
 
 namespace WorkOfFiction.Controllers
 {
     public class CountryController : Controller
     {
-        private readonly Count _oracleHelper;
+        private readonly CountryService _countryService;
 
-        public CountryController()
+        public CountryController(CountryService countryService)
         {
-            _oracleHelper = new OracleHelper();
+            _countryService = countryService;
         }
 
-        // GET: Country
         public ActionResult Index()
         {
-            return View();
+            var countries = _countryService.GetAllCountries();
+
+            return View(countries);
         }
     }
 }
