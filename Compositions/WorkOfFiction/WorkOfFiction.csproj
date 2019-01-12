@@ -169,6 +169,7 @@
     <Compile Include="Enums\TableName.cs" />
     <Compile Include="Services\GenreService.cs" />
     <Compile Include="Services\CountryService.cs" />
+    <Compile Include="Services\TypeService.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\bootstrap-theme.css" />

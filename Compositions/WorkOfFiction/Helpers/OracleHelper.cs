@@ -69,14 +69,9 @@ namespace WorkOfFiction.Helpers
             }
         }
 
-        #endregion
-
-        #region GetAll
-
-        public IEnumerable<Type> GetAllTypes()
+        public bool CheckIfAlreadyExist(TableName tableName, string columnName, string columnValue)
         {
-            var queryString = $"select * from {Tables[TableName.Types]}";
-            var types = new List<Type>();
+            var queryString = $"select 1 from {Tables[TableName.Genres]} where {columnName} = '{columnValue}'";
 
             using (var connection = new OracleConnection(Connection))
             {
@@ -84,19 +79,16 @@ namespace WorkOfFiction.Helpers
                 connection.Open();
                 using (var reader = command.ExecuteReader())
                 {
-                    while (reader.Read())
-                    {
-                        types.Add(new Type
-                        {
-                            Id = reader.GetInt32(0),
-                            Name = reader.GetString(1)
-                        });
-                    }
+                    return reader.HasRows;
                 }
             }
-
-            return types;
         }
+
+        #endregion
+
+        #region GetAll
+
+    
 
         public IEnumerable<Author> GetAllAuthors()
         {
@@ -186,32 +178,7 @@ namespace WorkOfFiction.Helpers
 
         #region GetOne
 
-        public Type GetType(int? id)
-        {
-            if (id.HasValue)
-            {
-                var queryString = $"select name from kudriavtseva_types where type_id = {id}";
-                var type = new Type();
-
-                using (var connection = new OracleConnection(Connection))
-                {
-                    var command = new OracleCommand(queryString, connection);
-                    connection.Open();
-                    using (var reader = command.ExecuteReader())
-                    {
-                        if (reader.Read())
-                        {
-                            type.Id = id.Value;
-                            type.Name = reader.GetString(0);
-                        }
-                    }
-                }
-
-                return type;
-            }
-
-            return null;
-        }
+   
 
 
         public Language GetLanguage(int? id)
