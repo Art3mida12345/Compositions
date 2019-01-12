@@ -86,7 +86,7 @@ namespace WorkOfFiction.Services
 
         public void Update(Country country)
         {
-            _oracleHelper.Update(TableName.Countries, country.ToStringExtension());
+            _oracleHelper.Update(TableName.Countries, country.Id, country.ToStringExtension());
         }
     }
 }

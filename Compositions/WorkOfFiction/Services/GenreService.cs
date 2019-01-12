@@ -44,7 +44,7 @@ namespace WorkOfFiction.Services
 
         public void Update(Genre genre)
         {
-            _oracleHelper.Update(TableName.Genres, genre.ToStringExtension());
+            _oracleHelper.Update(TableName.Genres, genre.Id, genre.ToStringExtension());
         }
 
         public void Delete(int genreId)

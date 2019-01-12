@@ -35,7 +35,7 @@ namespace WorkOfFiction.Controllers
         {
             if (ModelState.IsValid)
             {
-                _oracleHelper.Update(TableName.Languages, language.ToStringExtension());
+                _oracleHelper.Update(TableName.Languages, language.Id, language.ToStringExtension());
 
                 return RedirectToAction("Index");
             }

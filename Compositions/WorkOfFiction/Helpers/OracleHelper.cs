@@ -11,17 +11,20 @@ namespace WorkOfFiction.Helpers
     public class OracleHelper
     {
         #region Connection
-        public string Connection { get; } = 
+
+        public string Connection { get; } =
             "Data Source=" +
             $"(DESCRIPTION=(ADDRESS=(PROTOCOL=TCP)(HOST={Environment.MachineName})" +
             "(PORT=1521))(CONNECT_DATA=(SERVER=DEDICATED)(SERVICE_NAME=XE)));" +
             "User Id=LYB;Password=123;";
+
         #endregion
 
         #region CUD
+
         public void Insert(TableName tableName, params string[] values)
         {
-            using (var conn = new OracleConnection())
+            using (var conn = new OracleConnection(Connection))
             {
                 conn.Open();
                 var cmd = conn.CreateCommand();
@@ -33,18 +36,23 @@ namespace WorkOfFiction.Helpers
             }
         }
 
-        public void Update(TableName tableName, params string[] values)
+        public void Update(TableName tableName, int? id, params string[] values)
         {
-            var setString = StringHelper.CreateStringWithEquals(tableName, values);
-            if (!string.IsNullOrEmpty(setString))
+            if (id.HasValue)
             {
-                using (var conn = new OracleConnection(Connection))
+                var setString = StringHelper.CreateStringWithEquals(tableName, values);
+                if (!string.IsNullOrEmpty(setString))
                 {
-                    conn.Open();
-                    var cmd = conn.CreateCommand();
-                    var query = $"update {Tables[tableName]} set {setString}";
-                    cmd.CommandText = query;
-                    cmd.ExecuteNonQuery();
+                    using (var conn = new OracleConnection(Connection))
+                    {
+                        conn.Open();
+                        var cmd = conn.CreateCommand();
+
+                        var query = $"update {Tables[tableName]} set {setString} where {Keys[tableName]} = {id.Value}";
+                        cmd.CommandText = query;
+
+                        cmd.ExecuteNonQuery();
+                    }
                 }
             }
         }
@@ -60,9 +68,11 @@ namespace WorkOfFiction.Helpers
                 cmd.ExecuteNonQuery();
             }
         }
+
         #endregion
 
         #region GetAll
+
         public IEnumerable<Type> GetAllTypes()
         {
             var queryString = $"select * from {Tables[TableName.Types]}";
@@ -145,7 +155,6 @@ namespace WorkOfFiction.Helpers
             return compositions;
         }
 
-       
 
         public IEnumerable<Language> GetAllLanguages()
         {
@@ -172,9 +181,11 @@ namespace WorkOfFiction.Helpers
 
             return languages;
         }
+
         #endregion
 
         #region GetOne
+
         public Type GetType(int? id)
         {
             if (id.HasValue)
@@ -202,13 +213,13 @@ namespace WorkOfFiction.Helpers
             return null;
         }
 
-  
 
         public Language GetLanguage(int? id)
         {
             if (id.HasValue)
             {
-                var queryString = $"select {StringHelper.CreateStringWithSeparator(Columns[TableName.Languages])} from {Tables[TableName.Languages]} where {Keys[TableName.Languages]} = {id}";
+                var queryString =
+                    $"select {StringHelper.CreateStringWithSeparator(Columns[TableName.Languages])} from {Tables[TableName.Languages]} where {Keys[TableName.Languages]} = {id}";
                 var language = new Language();
 
                 using (var connection = new OracleConnection(Connection))
@@ -284,7 +295,7 @@ namespace WorkOfFiction.Helpers
                         {
                             composition.Id = id.Value;
                             composition.Title = reader.GetString(0);
-                            composition.Annotation= reader.GetString(1);
+                            composition.Annotation = reader.GetString(1);
                             composition.LanguageId = reader.GetInt32(2);
                             composition.TypeId = reader.GetInt32(3);
                         }
@@ -296,6 +307,7 @@ namespace WorkOfFiction.Helpers
 
             return null;
         }
+
         #endregion
     }
 }
