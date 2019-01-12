@@ -7,11 +7,13 @@ namespace WorkOfFiction.Controllers
     public class AuthorController : Controller
     {
         private readonly AuthorService _authorService;
-        
+        private readonly CountryService _countryService;
 
-        public AuthorController(AuthorService authorService)
+
+        public AuthorController(AuthorService authorService, CountryService countryService)
         {
             _authorService = authorService;
+            _countryService = countryService;
         }
 
         public ActionResult Index()
@@ -23,6 +25,10 @@ namespace WorkOfFiction.Controllers
 
         public ActionResult Edit(int? id)
         {
+            var countries = _countryService.GetAllCountries();
+
+            ViewBag.Countries = new SelectList(countries, "Id", "CountryName");
+
             var author = id.HasValue ? _authorService.GetAuthor(id.Value) : new Author();
 
             return View(author);
@@ -30,9 +36,13 @@ namespace WorkOfFiction.Controllers
 
         public ActionResult Details(int? id)
         {
-            var author = id.HasValue ? _authorService.GetAuthor(id.Value) : new Author();
+            if (id.HasValue)
+            {
+                var author = _authorService.GetAuthor(id.Value);
+                return View(author);
+            }
 
-            return View(author);
+            return View("Message", model: "Author id cannot be null");
         }
 
 
@@ -52,11 +62,16 @@ namespace WorkOfFiction.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public RedirectToRouteResult Delete(Author author)
+        public ActionResult Delete(Author author)
         {
             if (author.Id.HasValue)
             {
-                _authorService.Delete(author.Id.Value);
+                var wasDeleted = _authorService.Delete(author.Id.Value);
+
+                if (!wasDeleted)
+                {
+                    return View("Message", model: $"Author: {author.FirstName + " " + author.LastName} has active relations. You can not delete this author");
+                }
             }
 
             return RedirectToAction("Index");
@@ -77,12 +92,18 @@ namespace WorkOfFiction.Controllers
 
         public ViewResult Create()
         {
+            var countries = _countryService.GetAllCountries();
+
+            ViewBag.Countries = new SelectList(countries, "Id", "CountryName");
+
             return View();
         }
 
         [HttpPost]
         public ActionResult Create(Author author)
         {
+
+
             if (ModelState.IsValid)
             {
                 _authorService.Insert(author);

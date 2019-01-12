@@ -233,6 +233,7 @@
     <Content Include="Views\Author\Create.cshtml" />
     <Content Include="Views\Author\Details.cshtml" />
     <Content Include="Views\Composition\Index.cshtml" />
+    <Content Include="Views\Author\Delete.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
