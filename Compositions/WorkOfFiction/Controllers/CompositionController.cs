@@ -1,6 +1,5 @@
 ﻿using System.Linq;
 using System.Web.Mvc;
-using WorkOfFiction.Helpers;
 using WorkOfFiction.Models;
 using WorkOfFiction.Services;
 using WorkOfFiction.ViewModels;
@@ -67,7 +66,6 @@ namespace WorkOfFiction.Controllers
             return View(composition);
         }
 
-
         [HttpGet]
         public ActionResult Filter(CompositionFilter filter)
         {
@@ -77,6 +75,43 @@ namespace WorkOfFiction.Controllers
 
             return View(filter);
 
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Delete(Composition composition)
+        {
+            if (composition.Id.HasValue)
+            {
+                var result = _compositionService.Delete(composition.Id.Value);
+
+                if (!result)
+                {
+                    return View("Message", model: $"Composition with id = {composition.Id} has relation and can not be delete.");
+                }
+            }
+
+            return RedirectToAction("Index");
+        }
+
+        [HttpGet]
+        public ActionResult Delete(int? id)
+        {
+            var composition = _compositionService.GetComposition(id);
+
+            if (composition != null)
+            {
+                return PartialView(composition);
+            }
+
+            return View("Message", model: "Composition not found");
+        }
+
+        public ActionResult Details(int? id)
+        {
+            var composition = _compositionService.GetComposition(id);
+
+            return View(composition);
         }
 
         private void InitializeFilterModel(CompositionFilter filter)
@@ -132,6 +167,5 @@ namespace WorkOfFiction.Controllers
                     });
             }
         }
-
     }
 }
