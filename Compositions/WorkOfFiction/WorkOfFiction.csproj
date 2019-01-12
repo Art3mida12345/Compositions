@@ -194,6 +194,8 @@
     <Content Include="Views\Genre\Create.cshtml" />
     <Content Include="Views\Language\Index.cshtml" />
     <Content Include="Views\Language\Create.cshtml" />
+    <Content Include="Views\Language\Edit.cshtml" />
+    <Content Include="Views\Language\Delete.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
