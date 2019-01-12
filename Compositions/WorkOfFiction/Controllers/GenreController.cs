@@ -8,14 +8,12 @@ namespace WorkOfFiction.Controllers
 {
     public class GenreController : Controller
     {
-        private readonly OracleHelper _oracleHelper;
         private readonly GenreService _genreService;
 
 
-        public GenreController()
+        public GenreController(GenreService genreService)
         {
-            _oracleHelper = new OracleHelper();
-            _genreService = new GenreService();
+            _genreService = genreService;
         }
 
         public ActionResult Index()

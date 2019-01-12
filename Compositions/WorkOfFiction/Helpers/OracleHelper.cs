@@ -13,7 +13,14 @@ namespace WorkOfFiction.Helpers
 {
     public class OracleHelper
     {
-       
+        #region Connection
+        public string Connection { get; } = 
+            "Data Source=" +
+            $"(DESCRIPTION=(ADDRESS=(PROTOCOL=TCP)(HOST={Environment.MachineName})" +
+            "(PORT=1521))(CONNECT_DATA=(SERVER=DEDICATED)(SERVICE_NAME=XE)));" +
+            "User Id=LYB;Password=123;";
+        #endregion
+
         #region CUD
         public void Insert(TableName tableName, params string[] values)
         {
