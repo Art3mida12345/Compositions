@@ -6,6 +6,13 @@
 
 @using (Html.BeginForm("Index", "Composition", FormMethod.Get))
 {
+    <div class="form-group row">
+        <label for="partialTextTitleInput" class="col-sm-2 col-form-label">Composition title</label>
+        <div class="col-sm-10">
+            <input class="form-control" type="text" value="@Model.partialTextTitle" name="partialTextTitle" id="partialTextTitleInput" placeholder="title"/>
+        </div>
+    </div>
+
     @Html.Partial("_checkBoxPicker", model: Model.Genres, 
         viewData: new ViewDataDictionary { { "Name", "genre" }, { "FormInputName", "SelectedGenres" }, { "NamePlural", "Genres"} })
 

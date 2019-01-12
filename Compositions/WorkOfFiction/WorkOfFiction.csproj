@@ -165,7 +165,6 @@
     <Compile Include="Models\Composition.cs" />
     <Compile Include="Models\Country.cs" />
     <Compile Include="Models\CompositionFilter.cs" />
-    <Compile Include="Models\FilterCompositionsHelperModel.cs" />
     <Compile Include="Models\Genre.cs" />
     <Compile Include="Models\Language.cs" />
     <Compile Include="Models\Type.cs" />

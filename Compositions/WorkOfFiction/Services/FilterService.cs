@@ -50,11 +50,11 @@ namespace WorkOfFiction.Services
         private string CreateQueryString(CompositionFilter filter)
         {
             StringBuilder sb = new StringBuilder();
-            sb.Append($"select * from {Tables[TableName.Compositions]}");
+            sb.Append($"select distinct kudriavtseva_compositions.* from {Tables[TableName.Compositions]}");
             bool isConditiondAdded = false;
 
             if (!filter.SelectedTypes.Any() && !filter.SelectedAuthors.Any() && !filter.SelectedLangs.Any() &&
-                  !filter.SelectedTypes.Any())
+                !filter.SelectedTypes.Any() && string.IsNullOrWhiteSpace(filter.partialTextTitle))
                 return sb.ToString();
 
             sb.Append($" inner join " +
@@ -63,8 +63,6 @@ namespace WorkOfFiction.Services
                       "inner join " +
                       "kudriavtseva_genres on " +
                       "kudriavtseva_comps_genres.genre_id = kudriavtseva_genres.genre_id " +
-
-
                       "inner join " +
                       "kudriavtseva_comps_authors on " +
                       "kudriavtseva_comps_authors.composition_id = kudriavtseva_compositions.composition_id " +
@@ -75,18 +73,25 @@ namespace WorkOfFiction.Services
 
             sb.Append(" where ");
 
-            if (filter.SelectedGenres.Any())
+
+            if (!string.IsNullOrWhiteSpace(filter.partialTextTitle))
             {
-                sb.Append(ApplyStringIdsFilter(filter.SelectedGenres, "kudriavtseva_comps_genres.genre_id",false));
+                sb.Append(ApplyPartialTextSearchFilter(filter.partialTextTitle, "title"));
                 isConditiondAdded = true;
             }
-            
+
+            if (filter.SelectedGenres.Any())
+            {
+                sb.Append(ApplyStringIdsFilter(filter.SelectedGenres, "kudriavtseva_comps_genres.genre_id",
+                    isConditiondAdded));
+                isConditiondAdded = true;
+            }
+
             if (filter.SelectedAuthors.Any())
             {
-
-                sb.Append(ApplyStringIdsFilter(filter.SelectedAuthors, "kudriavtseva_comps_authors.author_id", isConditiondAdded));
+                sb.Append(ApplyStringIdsFilter(filter.SelectedAuthors, "kudriavtseva_comps_authors.author_id",
+                    isConditiondAdded));
                 isConditiondAdded = true;
-
             }
 
             if (filter.SelectedLangs.Any())
@@ -106,10 +111,31 @@ namespace WorkOfFiction.Services
             return sb.ToString();
         }
 
+        private string ApplyPartialTextSearchFilter(string partialText, string columnFiltered)
+        {
+            StringBuilder sb = new StringBuilder();
+
+            var textList = partialText.Split(new[] {' ', '-', '.', '_'});
+
+
+            sb.Append($"({columnFiltered} like '%{textList[0]}%'");
+
+            for (int i = 1; i < textList.Length; i++)
+            {
+                sb.Append(" OR ");
+                sb.Append($"{columnFiltered} like '%{textList[i]}%'");
+            }
+
+            sb.Append(")");
+
+
+            return sb.ToString();
+        }
+
         private string ApplyStringIdsFilter(List<int> ids, string columnFiltered, bool isConditiondAdded)
         {
             StringBuilder sb = new StringBuilder();
-;
+            ;
             if (ids.Any())
             {
                 if (isConditiondAdded)
@@ -117,14 +143,13 @@ namespace WorkOfFiction.Services
 
                 sb.Append($"({columnFiltered} = '{ids[0]}'");
 
-                for(int i = 1; i< ids.Count; i ++)
+                for (int i = 1; i < ids.Count; i++)
                 {
                     sb.Append(" OR ");
                     sb.Append($"{columnFiltered} = '{ids[i]}'");
                 }
 
                 sb.Append(")");
-
             }
 
             return sb.ToString();

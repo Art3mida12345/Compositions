@@ -5,6 +5,7 @@ namespace WorkOfFiction.Models
 {
     public class CompositionFilter
     {
+        public string partialTextTitle { get; set; }
         public List<CheckBoxViewModel> Genres { get; set; }
 
         public List<CheckBoxViewModel> Authors { get; set; }

@@ -8,9 +8,7 @@
 }
 
 <div class="container">
-    <p>
-        @Html.ActionLink("Create New", "Create", null, new { @class = "btn btn-default" })
-    </p>
+
 
     @Html.Partial("_filter", filter)
 
@@ -22,7 +20,8 @@
             <th>
                 @Html.DisplayNameFor(model => model.Annotation)
             </th>
-            <th></th>
+            <th>        @Html.ActionLink("Create New", "Create", null, new { @class = "btn btn-default" })
+            </th>
         </tr>
 
         @foreach (var item in Model)
