@@ -15,19 +15,21 @@ namespace WorkOfFiction.Controllers
         private readonly TypeService _typeService;
         private readonly GenreService _genreService;
         private readonly LanguageService _languageService;
-
+        private readonly FilterService _filterService;
         public CompositionController(
             CompositionService compositionService,
             AuthorService authorService,
             TypeService typeService,
             GenreService genreService,
-            LanguageService languageService)
+            LanguageService languageService, 
+            FilterService filterService)
         {
             _compositionService = compositionService;
             _authorService = authorService;
             _typeService = typeService;
             _genreService = genreService;
             _languageService = languageService;
+            _filterService = filterService;
         }
 
         public ActionResult Index()
@@ -69,6 +71,8 @@ namespace WorkOfFiction.Controllers
         [HttpGet]
         public ActionResult Filter(CompositionFilter filter)
         {
+            var filteredCompositions = _filterService.ApplyFilter(filter);
+
             InitializeFilterModel(filter);
 
             return View(filter);

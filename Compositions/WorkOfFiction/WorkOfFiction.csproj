@@ -172,6 +172,7 @@
     <Compile Include="Enums\TableName.cs" />
     <Compile Include="Services\AuthorService.cs" />
     <Compile Include="Services\CompositionService.cs" />
+    <Compile Include="Services\FilterService.cs" />
     <Compile Include="Services\GenreService.cs" />
     <Compile Include="Services\CountryService.cs" />
     <Compile Include="Services\LanguageService.cs" />

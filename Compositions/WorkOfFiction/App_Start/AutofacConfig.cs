@@ -21,6 +21,7 @@ namespace WorkOfFiction
             builder.RegisterType<LanguageService>().AsSelf().InstancePerDependency();
             builder.RegisterType<AuthorService>().AsSelf().InstancePerDependency();
             builder.RegisterType<CompositionService>().AsSelf().InstancePerDependency();
+            builder.RegisterType<FilterService>().AsSelf().InstancePerDependency();
 
             var container = builder.Build();
             DependencyResolver.SetResolver(new AutofacDependencyResolver(container));
