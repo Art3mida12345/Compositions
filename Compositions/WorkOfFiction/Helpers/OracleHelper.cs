@@ -27,7 +27,7 @@ namespace WorkOfFiction.Helpers
             {
                 conn.Open();
                 var cmd = conn.CreateCommand();
-                var valuesString = CreateStringWithSeparator(values);
+                var valuesString = StringHelper.CreateStringWithSeparator(values);
 
                 cmd.CommandText = $"insert into {Tables[tableName]} ({Headers[tableName]}) " +
                                   $"values({Sequences[tableName]}, {valuesString})";
@@ -37,7 +37,7 @@ namespace WorkOfFiction.Helpers
 
         public void Update(TableName tableName, params string[] values)
         {
-            var setString = CreateStringWithEquals(tableName, values);
+            var setString = StringHelper.CreateStringWithEquals(tableName, values);
             if (!string.IsNullOrEmpty(setString))
             {
                 using (var conn = new OracleConnection(Connection))
@@ -258,7 +258,7 @@ namespace WorkOfFiction.Helpers
         {
             if (id.HasValue)
             {
-                var queryString = $"select {CreateStringWithSeparator(Columns[TableName.Languages])} from {Tables[TableName.Languages]} where {Keys[TableName.Languages]} = {id}";
+                var queryString = $"select {StringHelper.CreateStringWithSeparator(Columns[TableName.Languages])} from {Tables[TableName.Languages]} where {Keys[TableName.Languages]} = {id}";
                 var language = new Language();
 
                 using (var connection = new OracleConnection(Connection))
@@ -282,42 +282,12 @@ namespace WorkOfFiction.Helpers
             return null;
         }
 
-        public Country GetCountry(int? id)
-        {
-            if (id.HasValue)
-            {
-                var queryString =
-                    $"select {CreateStringWithSeparator(Columns[TableName.Countries])} from {Tables[TableName.Countries]} where country_id = {id}";
-                var country = new Country();
-
-                using (var connection = new OracleConnection(Connection))
-                {
-                    var command = new OracleCommand(queryString, connection);
-                    connection.Open();
-                    using (var reader = command.ExecuteReader())
-                    {
-                        if (reader.Read())
-                        {
-                            country.Id = id.Value;
-                            country.CountryName = reader.GetString(0);
-                            country.Exist = reader.GetBoolean(1);
-                            country.Capital = reader.GetString(2);
-                        }
-                    }
-                }
-
-                return country;
-            }
-
-            return null;
-        }
-
         public Author GetAuthor(int? id)
         {
             if (id.HasValue)
             {
                 var queryString =
-                    $"select {CreateStringWithSeparator(Columns[TableName.Authors])} from {Tables[TableName.Authors]} where country_id = {id}";
+                    $"select {StringHelper.CreateStringWithSeparator(Columns[TableName.Authors])} from {Tables[TableName.Authors]} where country_id = {id}";
                 var author = new Author();
 
                 using (var connection = new OracleConnection(Connection))
@@ -334,7 +304,7 @@ namespace WorkOfFiction.Helpers
                             author.DateBirth = reader.GetDateTime(2);
                             author.DateDeath = reader.GetDateTime(3);
                             author.CountryId = reader.GetInt32(4);
-                            author.Country = GetCountry(author.CountryId.GetValueOrDefault());
+                            //author.Country = GetCountry(author.CountryId.GetValueOrDefault());
                             author.Nickname = reader.GetString(5);
                         }
                     }
@@ -351,7 +321,7 @@ namespace WorkOfFiction.Helpers
             if (id.HasValue)
             {
                 var queryString =
-                    $"select {CreateStringWithSeparator(Columns[TableName.Compositions])} from {Tables[TableName.Compositions]} where composition_id = {id}";
+                    $"select {StringHelper.CreateStringWithSeparator(Columns[TableName.Compositions])} from {Tables[TableName.Compositions]} where composition_id = {id}";
                 var composition = new Composition();
 
                 using (var connection = new OracleConnection(Connection))
@@ -372,46 +342,6 @@ namespace WorkOfFiction.Helpers
                 }
 
                 return composition;
-            }
-
-            return null;
-        }
-        #endregion
-
-        #region Tools
-        private string CreateStringWithSeparator(params string[] values)
-        {
-            var stringBuilder = new StringBuilder();
-
-            if (values.Length == 1)
-            {
-                return values[0];
-            }
-
-            foreach (var value in values)
-            {
-                stringBuilder.Append(value);
-                stringBuilder.Append(",");
-            }
-
-            return stringBuilder.ToString(0, stringBuilder.Length - 1);
-        }
-
-        private string CreateStringWithEquals(TableName tableName, params string[] values)
-        {
-            if (Columns[tableName].Length == values.Length)
-            {
-                var stringBuilder = new StringBuilder();
-                Columns[tableName].ForEach(value => values.ForEach(v =>
-                    {
-                        stringBuilder.Append(value);
-                        stringBuilder.Append(" = ");
-                        stringBuilder.Append(v);
-                        stringBuilder.Append(", ");
-                    }
-                ));
-
-                return stringBuilder.ToString(0, stringBuilder.Length - 2);
             }
 
             return null;

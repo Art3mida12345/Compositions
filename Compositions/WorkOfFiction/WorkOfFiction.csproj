@@ -158,6 +158,7 @@
     <Compile Include="Helpers\DbDictionaries.cs" />
     <Compile Include="Helpers\OracleHelper.cs" />
     <Compile Include="Helpers\StringExtensions.cs" />
+    <Compile Include="Helpers\StringHelper.cs" />
     <Compile Include="Models\Author.cs" />
     <Compile Include="Models\Composition.cs" />
     <Compile Include="Models\Country.cs" />

@@ -1,7 +1,5 @@
-﻿
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Data.OracleClient;
-using WorkOfFiction.Constants;
 using WorkOfFiction.Enums;
 using WorkOfFiction.Helpers;
 using WorkOfFiction.Models;

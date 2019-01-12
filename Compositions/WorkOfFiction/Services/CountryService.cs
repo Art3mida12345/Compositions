@@ -20,7 +20,7 @@ namespace WorkOfFiction.Services
             var queryString = $"select * from {DbDictionaries.Tables[TableName.Countries]}";
             var countries = new List<Country>();
 
-            using (var connection = new OracleConnection(Connection))
+            using (var connection = new OracleConnection(_oracleHelper.Connection))
             {
                 var command = new OracleCommand(queryString, connection);
                 connection.Open();
@@ -40,6 +40,36 @@ namespace WorkOfFiction.Services
             }
 
             return countries;
+        }
+
+        public Country GetCountry(int? id)
+        {
+            if (id.HasValue)
+            {
+                var queryString =
+                    $"select {CreateStringWithSeparator(Columns[TableName.Countries])} from {Tables[TableName.Countries]} where country_id = {id}";
+                var country = new Country();
+
+                using (var connection = new OracleConnection(Connection))
+                {
+                    var command = new OracleCommand(queryString, connection);
+                    connection.Open();
+                    using (var reader = command.ExecuteReader())
+                    {
+                        if (reader.Read())
+                        {
+                            country.Id = id.Value;
+                            country.CountryName = reader.GetString(0);
+                            country.Exist = reader.GetBoolean(1);
+                            country.Capital = reader.GetString(2);
+                        }
+                    }
+                }
+
+                return country;
+            }
+
+            return null;
         }
 
         public void Insert(Country country)
