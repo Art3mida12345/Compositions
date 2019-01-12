@@ -18,6 +18,8 @@ namespace WorkOfFiction
             builder.RegisterType<OracleHelper>().AsSelf().InstancePerDependency();
             builder.RegisterType<CountryService>().AsSelf().InstancePerDependency();
             builder.RegisterType<TypeService>().AsSelf().InstancePerDependency();
+            builder.RegisterType<AuthorService>().AsSelf().InstancePerDependency();
+
 
             var container = builder.Build();
             DependencyResolver.SetResolver(new AutofacDependencyResolver(container));
