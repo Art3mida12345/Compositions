@@ -1,6 +1,6 @@
-﻿using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
 using System.Web.Mvc;
+using WorkOfFiction.Helpers;
 using WorkOfFiction.Models;
 using WorkOfFiction.Services;
 using WorkOfFiction.ViewModels;

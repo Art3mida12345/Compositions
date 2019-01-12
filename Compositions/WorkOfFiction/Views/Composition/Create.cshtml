@@ -24,7 +24,7 @@
         <div class="form-group">
             @Html.LabelFor(model => model.Annotation, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.TextAreaFor(model => model.Annotation, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.TextAreaFor(model => model.Annotation, new { @class = "form-control" })
                 @Html.ValidationMessageFor(model => model.Annotation, "", new { @class = "text-danger" })
             </div>
         </div>
