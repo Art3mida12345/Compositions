@@ -5,7 +5,6 @@ using System.Text;
 using WebGrease.Css.Extensions;
 using WorkOfFiction.Enums;
 using WorkOfFiction.Models;
-using static WorkOfFiction.Constants.GlobalConstants;
 using static WorkOfFiction.Helpers.DbDictionaries;
 using Type = WorkOfFiction.Models.Type;
 
