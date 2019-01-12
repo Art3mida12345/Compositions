@@ -18,14 +18,14 @@ namespace WorkOfFiction.Controllers
 
         public ActionResult Index()
         {
-            var genres = _oracleHelper.GetAllGenres();
+            var genres = _genreService.GetAllGenres();
 
             return View(genres);
         }
 
         public ActionResult Edit(int? id)
         {
-            var genre = id.HasValue ? _oracleHelper.GetGenre(id.Value) : new Genre();
+            var genre = id.HasValue ? _genreService.GetGenre(id.Value) : new Genre();
 
             return View(genre);
         }
@@ -35,7 +35,7 @@ namespace WorkOfFiction.Controllers
         {
             if (ModelState.IsValid)
             {
-                _oracleHelper.Update(TableName.Genres, genre.ToStringExtension());
+                _genreService.Update(genre);
 
                 return RedirectToAction("Index");
             }
@@ -49,7 +49,7 @@ namespace WorkOfFiction.Controllers
         {
             if (genre.Id.HasValue)
             {
-                _oracleHelper.Delete(TableName.Genres, genre.Id.Value);
+                _genreService.Delete(genre.Id.Value);
             }
 
             return RedirectToAction("Index");
@@ -58,7 +58,7 @@ namespace WorkOfFiction.Controllers
         [HttpGet]
         public PartialViewResult Delete(int? id)
         {
-            var genre = _oracleHelper.GetGenre(id);
+            var genre = _genreService.GetGenre(id);
 
             if (genre != null)
             {
@@ -79,7 +79,7 @@ namespace WorkOfFiction.Controllers
             
             if (ModelState.IsValid)
             {
-                _oracleHelper.Insert(TableName.Genres, genre.ToStringExtension(false));
+                _genreService.Insert(genre);
 
                 return RedirectToAction("Index");
             }
