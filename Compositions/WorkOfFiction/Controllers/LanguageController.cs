@@ -56,7 +56,7 @@ namespace WorkOfFiction.Controllers
         }
 
         [HttpGet]
-        public PartialViewResult Delete(int? id)
+        public ActionResult Delete(int? id)
         {
             var language = _oracleHelper.GetLanguage(id);
 
@@ -65,7 +65,7 @@ namespace WorkOfFiction.Controllers
                 return PartialView(language);
             }
 
-            return PartialView("Message", model: "Language not found");
+            return View("Message", model: "Language not found");
         }
 
         public ViewResult Create()
