@@ -14,7 +14,6 @@ namespace WorkOfFiction.Controllers
             _oracleHelper = new OracleHelper();
         }
 
-        // GET: Genre
         public ActionResult Index()
         {
             var genres = _oracleHelper.GetAllGenres();
