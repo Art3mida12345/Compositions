@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿
+using System.Collections.Generic;
 using System.Data.OracleClient;
 using WorkOfFiction.Enums;
 using WorkOfFiction.Helpers;
@@ -7,39 +8,39 @@ using static WorkOfFiction.Helpers.DbDictionaries;
 
 namespace WorkOfFiction.Services
 {
-    public class GenreService
+    public class TypeService
     {
         private readonly OracleHelper _oracleHelper;
 
-        public GenreService(OracleHelper oracleHelper)
+        public TypeService(OracleHelper oracleHelper)
         {
             _oracleHelper = oracleHelper;
         }
 
-        public bool CheckIfAlreadyExist(Genre genre)
+        public bool CheckIfAlreadyExist(Type type)
         {
-            return _oracleHelper.CheckIfAlreadyExist(TableName.Genres, "name", genre.Name);
+            return _oracleHelper.CheckIfAlreadyExist(TableName.Types, "name", type.Name);
         }
 
-        public void Insert(Genre genre)
+        public void Insert(Type type)
         {
-            _oracleHelper.Insert(TableName.Genres, genre.ToStringExtension());
+            _oracleHelper.Insert(TableName.Types, type.ToStringExtension(false));
         }
 
-        public void Update(Genre genre)
+        public void Update(Type type)
         {
-            _oracleHelper.Update(TableName.Genres, genre.Id, genre.ToStringExtension());
+            _oracleHelper.Update(TableName.Types, type.Id, type.ToStringExtension());
         }
 
-        public void Delete(int genreId)
+        public void Delete(int typeId)
         {
-            _oracleHelper.Delete(TableName.Genres, genreId);
+            _oracleHelper.Delete(TableName.Types, typeId);
         }
 
-        public IEnumerable<Genre> GetAllGenres()
+        public IEnumerable<Type> GetAllTypes()
         {
-            var queryString = $"select * from {Tables[TableName.Genres]}";
-            var genres = new List<Genre>();
+            var queryString = $"select * from {Tables[TableName.Types]}";
+            var types = new List<Type>();
 
             using (var connection = new OracleConnection(_oracleHelper.Connection))
             {
@@ -49,7 +50,7 @@ namespace WorkOfFiction.Services
                 {
                     while (reader.Read())
                     {
-                        genres.Add(new Genre
+                        types.Add(new Type
                         {
                             Id = reader.GetInt32(0),
                             Name = reader.GetString(1)
@@ -58,15 +59,15 @@ namespace WorkOfFiction.Services
                 }
             }
 
-            return genres;
+            return types;
         }
 
-        public Genre GetGenre(int? id)
+        public Type GetType(int? id)
         {
             if (id.HasValue)
             {
-                var queryString = $"select name from {Tables[TableName.Genres]} where genre_id = {id}";
-                var genre = new Genre();
+                var queryString = $"select name from kudriavtseva_types where type_id = {id}";
+                var type = new Type();
 
                 using (var connection = new OracleConnection(_oracleHelper.Connection))
                 {
@@ -76,16 +77,17 @@ namespace WorkOfFiction.Services
                     {
                         if (reader.Read())
                         {
-                            genre.Id = id.Value;
-                            genre.Name = reader.GetString(0);
+                            type.Id = id.Value;
+                            type.Name = reader.GetString(0);
                         }
                     }
                 }
 
-                return genre;
+                return type;
             }
 
             return null;
         }
+
     }
 }

@@ -2,29 +2,30 @@
 using WorkOfFiction.Enums;
 using WorkOfFiction.Helpers;
 using WorkOfFiction.Models;
+using WorkOfFiction.Services;
 
 namespace WorkOfFiction.Controllers
 {
     public class TypeController : Controller
     {
-        private readonly OracleHelper _oracleHelper;
+        private readonly TypeService _typeService;
 
-        public TypeController()
+        public TypeController(TypeService typeService)
         {
-            _oracleHelper = new OracleHelper();
+            _typeService = typeService;
         }
 
         // GET: Type
         public ActionResult Index()
         {
-            var types = _oracleHelper.GetAllTypes();
+            var types = _typeService.GetAllTypes();
 
             return View(types);
         }
 
         public ActionResult Edit(int? id)
         {
-            var type = id.HasValue ? _oracleHelper.GetType(id.Value) : new Type();
+            var type = id.HasValue ? _typeService.GetType(id.Value) : new Type();
 
             return View(type);
         }
@@ -34,9 +35,14 @@ namespace WorkOfFiction.Controllers
         {
             if (ModelState.IsValid)
             {
-                _oracleHelper.Update(TableName.Types, type.Id, type.ToStringExtension());
+                var alreadyEXist = _typeService.CheckIfAlreadyExist(type);
+                if (!alreadyEXist)
+                {
+                    _typeService.Update(type);
+                    return RedirectToAction("Index");
+                }
+                ModelState.AddModelError("Name", $"Type with name {type.Name} already exists");                
 
-                return RedirectToAction("Index");
             }
 
             return View(type);
@@ -48,7 +54,7 @@ namespace WorkOfFiction.Controllers
         {
             if (type.Id.HasValue)
             {
-                _oracleHelper.Delete(TableName.Types, type.Id.Value);
+                _typeService.Delete(type.Id.Value);
             }
 
             return RedirectToAction("Index");
@@ -57,7 +63,7 @@ namespace WorkOfFiction.Controllers
         [HttpGet]
         public PartialViewResult Delete(int? id)
         {
-            var type = _oracleHelper.GetType(id);
+            var type = _typeService.GetType(id);
 
             if (type != null)
             {
@@ -77,9 +83,16 @@ namespace WorkOfFiction.Controllers
         {
             if (ModelState.IsValid)
             {
-                _oracleHelper.Insert(TableName.Types, type.ToStringExtension(false));
+                var alreadyEXist = _typeService.CheckIfAlreadyExist(type);
+                if (!alreadyEXist)
+                {
+                    _typeService.Insert(type);
 
-                return RedirectToAction("Index");
+                    return RedirectToAction("Index");
+                }
+
+                ModelState.AddModelError("Name", $"Type with name {type.Name} already exists");                
+
             }
 
             return View(type);

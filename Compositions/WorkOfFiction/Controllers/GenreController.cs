@@ -32,9 +32,14 @@ namespace WorkOfFiction.Controllers
         {
             if (ModelState.IsValid)
             {
-                _genreService.Update(genre);
+                var alreadyExist = _genreService.CheckIfAlreadyExist(genre);
+                if (!alreadyExist)
+                {
+                    _genreService.Update(genre);
+                    return RedirectToAction("Index");
+                }
 
-                return RedirectToAction("Index");
+                ModelState.AddModelError("Name", $"Genre with name {genre.Name} already exists");
             }
 
             return View(genre);
@@ -73,12 +78,15 @@ namespace WorkOfFiction.Controllers
         [HttpPost]
         public ActionResult Create(Genre genre)
         {
-            
             if (ModelState.IsValid)
             {
-                _genreService.Insert(genre);
-
-                return RedirectToAction("Index");
+                var alreadyExist = _genreService.CheckIfAlreadyExist(genre);
+                if (!alreadyExist)
+                {
+                    _genreService.Insert(genre);
+                    return RedirectToAction("Index");
+                }
+                ModelState.AddModelError("Name", $"Genre with name {genre.Name} already exists");
             }
 
             return View(genre);
