@@ -14,8 +14,6 @@ namespace WorkOfFiction.Helpers
     public class OracleHelper
     {
        
-      
-
         #region CUD
         public void Insert(TableName tableName, params string[] values)
         {
