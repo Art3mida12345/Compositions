@@ -10,10 +10,12 @@ namespace WorkOfFiction.Services
     public class AuthorService
     {
         private readonly OracleHelper _oracleHelper;
+        private readonly CountryService _countryService;
 
-        public AuthorService(OracleHelper oracleHelper)
+        public AuthorService(OracleHelper oracleHelper, CountryService countryService)
         {
             _oracleHelper = oracleHelper;
+            _countryService = countryService;
         }
 
 
@@ -28,9 +30,19 @@ namespace WorkOfFiction.Services
             _oracleHelper.Update(TableName.Authors, author.Id, author.ToStringExtension());
         }
 
-        public void Delete(int authorId)
+        public bool Delete(int authorId)
         {
-            _oracleHelper.Delete(TableName.Authors, authorId);
+            try
+            {
+                _oracleHelper.Delete(TableName.Authors, authorId);
+            }
+            catch
+            {
+                return false;
+            }
+
+            return true;
+
         }
 
         public IEnumerable<Author> GetAllAuthors()
@@ -85,11 +97,12 @@ namespace WorkOfFiction.Services
                             author.DateBirth = reader.GetDateTime(2);
                             author.DateDeath = reader.GetDateTime(3);
                             author.CountryId = reader.GetInt32(4);
-                            //author.Country = GetCountry(author.CountryId.GetValueOrDefault());
                             author.Nickname = reader.GetString(5);
                         }
                     }
                 }
+
+                author.Country = _countryService.GetCountry(author.CountryId);
 
                 return author;
             }

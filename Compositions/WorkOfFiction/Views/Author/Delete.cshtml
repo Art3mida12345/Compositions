@@ -1,0 +1,22 @@
+﻿@model WorkOfFiction.Models.Author
+
+@{
+    Layout = null;
+}
+
+<div class="modal-content">
+    <div class="modal-header">
+        <button class="close" data-dismiss="modal" area-hidden="true">X</button>
+        <h4>Delete author - "@(Model.FirstName + " " + Model.LastName)"</h4>
+    </div>
+    <div class="modal-body">
+        @using (Html.BeginForm("Delete", "Author"))
+        {
+            @Html.AntiForgeryToken()
+            @Html.HiddenFor(model => model.Id)
+
+            <input type="submit" value="Ok" class="btn btn-default" />
+            <button data-dismiss="modal" area-hidden="true" class="btn btn-default">Cancel</button>
+        }
+    </div>
+</div>
