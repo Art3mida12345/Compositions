@@ -23,7 +23,7 @@ namespace WorkOfFiction.Services
 
         public void Insert(Genre genre)
         {
-            _oracleHelper.Insert(TableName.Genres, genre.ToStringExtension(false));
+            _oracleHelper.Insert(TableName.Genres, genre.ToStringExtension());
         }
 
         public void Update(Genre genre)

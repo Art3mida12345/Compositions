@@ -1,6 +1,4 @@
 ﻿using System.Web.Mvc;
-using WorkOfFiction.Enums;
-using WorkOfFiction.Helpers;
 using WorkOfFiction.Models;
 using WorkOfFiction.Services;
 
@@ -9,7 +7,6 @@ namespace WorkOfFiction.Controllers
     public class GenreController : Controller
     {
         private readonly GenreService _genreService;
-
 
         public GenreController(GenreService genreService)
         {

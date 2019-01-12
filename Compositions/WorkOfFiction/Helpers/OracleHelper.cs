@@ -47,6 +47,24 @@ namespace WorkOfFiction.Helpers
                     {
                         conn.Open();
                         var cmd = conn.CreateCommand();
+                        var query = $"update {Tables[tableName]} set {setString} where {Keys[tableName]} = {id.Value}";
+                        cmd.CommandText = query;
+                        cmd.ExecuteNonQuery();
+                    }
+                }
+            }
+        }
+        public void Update(TableName tableName, int? id, params string[] values)
+        {
+            if (id.HasValue)
+            {
+                var setString = StringHelper.CreateStringWithEquals(tableName, values);
+                if (!string.IsNullOrEmpty(setString))
+                {
+                    using (var conn = new OracleConnection(Connection))
+                    {
+                        conn.Open();
+                        var cmd = conn.CreateCommand();
 
                         var query = $"update {Tables[tableName]} set {setString} where {Keys[tableName]} = {id.Value}";
                         cmd.CommandText = query;

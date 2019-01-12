@@ -224,6 +224,9 @@
     <Content Include="Views\Country\Index.cshtml" />
     <Content Include="Views\Author\Index.cshtml" />
     <Content Include="Views\Author\Edit.cshtml" />
+    <Content Include="Views\Country\Edit.cshtml" />
+    <Content Include="Views\Country\Delete.cshtml" />
+    <Content Include="Views\Country\Create.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

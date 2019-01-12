@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Data.OracleClient;
 using WorkOfFiction.Enums;
 using WorkOfFiction.Helpers;
@@ -34,7 +35,7 @@ namespace WorkOfFiction.Services
                         {
                             Id = reader.GetInt32(0),
                             CountryName = reader.GetString(1),
-                            Exist = reader.GetBoolean(2),
+                            Exist = Convert.ToBoolean(reader.GetInt32(2)),
                             Capital = reader.GetString(3)
                         });
                     }
@@ -62,7 +63,7 @@ namespace WorkOfFiction.Services
                         {
                             country.Id = id.Value;
                             country.CountryName = reader.GetString(0);
-                            country.Exist = reader.GetBoolean(1);
+                            country.Exist = Convert.ToBoolean(reader.GetBoolean(1));
                             country.Capital = reader.GetString(2);
                         }
                     }
@@ -76,7 +77,7 @@ namespace WorkOfFiction.Services
 
         public void Insert(Country country)
         {
-            _oracleHelper.Insert(TableName.Countries, country.ToStringExtension(false));
+            _oracleHelper.Insert(TableName.Countries, country.ToStringExtension());
         }
 
         public bool CheckIfAlreadyExist(Country country)
@@ -86,7 +87,12 @@ namespace WorkOfFiction.Services
 
         public void Update(Country country)
         {
-            _oracleHelper.Update(TableName.Countries, country.Id, country.ToStringExtension());
+            _oracleHelper.Update(TableName.Countries, country.Id, country.ToStringExtension(false));
+        }
+
+        public void Delete(int id)
+        {
+            _oracleHelper.Delete(TableName.Countries, id);
         }
     }
 }

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace WorkOfFiction.Helpers
 {
@@ -16,10 +17,17 @@ namespace WorkOfFiction.Helpers
                 }
                 else
                 {
-                    var temp = property.GetValue(obj, null);
-                    if (temp != null)
+                    if (property.PropertyType == typeof(bool))
                     {
-                        properties.Add(temp.ToString());
+                        properties.Add(Convert.ToBoolean(property.GetValue(obj, null)) ? "1": "0");
+                    }
+                    else
+                    {
+                        var temp = property.GetValue(obj, null);
+                        if (temp != null)
+                        {
+                            properties.Add(temp.ToString());
+                        }
                     }
                 }
             }
