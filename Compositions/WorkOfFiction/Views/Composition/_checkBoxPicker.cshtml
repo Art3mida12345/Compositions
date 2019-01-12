@@ -1,0 +1,22 @@
+﻿@model IEnumerable<WorkOfFiction.Models.CheckBoxViewModel>
+
+@{
+    var pickerName = ViewData["Name"];
+    var formNameInput = ViewData["FormInputName"];
+    var nameInPlural = ViewData["NamePlural"];
+}
+<div class="games-filter-block picker-container">
+    <label data-toggle="collapse" class="collapse-label control-label" data-target="#@pickerName-FilterGroup" aria-expanded="true" for="@pickerName-FilterGroup">@nameInPlural</label>
+    <ul id="@pickerName-FilterGroup" class="ul-none">
+        @foreach (var item in Model)
+        {
+            <li class="filter-criteria">
+                <input id="@pickerName-@item.Id" type="checkbox"
+                       class="criteria-label checkbox-inline" value="@item.Id" checked="@item.IsChecked" name="@formNameInput" />
+                <label for="@pickerName-@item.Id">@item.Value</label>
+            </li>
+        }
+
+    </ul>
+
+</div>

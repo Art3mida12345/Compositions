@@ -4,6 +4,7 @@ using WorkOfFiction.Helpers;
 using WorkOfFiction.Models;
 using WorkOfFiction.Services;
 using WorkOfFiction.ViewModels;
+using CompositionFilter = WorkOfFiction.Models.CompositionFilter;
 
 namespace WorkOfFiction.Controllers
 {
@@ -63,5 +64,70 @@ namespace WorkOfFiction.Controllers
 
             return View(composition);
         }
+
+
+        [HttpGet]
+        public ActionResult Filter(CompositionFilter filter)
+        {
+            InitializeFilterModel(filter);
+
+            return View(filter);
+
+        }
+
+        private void InitializeFilterModel(CompositionFilter filter)
+        {
+            if (filter == null)
+            {
+                filter = new CompositionFilter();
+            }
+
+            var genres = _genreService.GetAllGenres();
+            var authors = _authorService.GetAllAuthors();
+            var types = _typeService.GetAllTypes();
+            var languages = _languageService.GetAllLanguages();
+
+            foreach (var genre in genres)
+            {
+                filter.Genres.Add(
+                    new CheckBoxViewModel
+                    {
+                        Id = genre.Id.Value,
+                        Value = genre.Name,
+                        IsChecked = filter.SelectedGenres.Contains(genre.Id.Value)
+                    });
+            }
+            foreach (var author in authors)
+            {
+                filter.Authors.Add(
+                    new CheckBoxViewModel
+                    {
+                        Id = author.Id.Value,
+                        Value = author.FirstName + " " + author.LastName + " " + author.DateBirth.ToShortDateString(),
+                        IsChecked = filter.SelectedAuthors.Contains(author.Id.Value)
+                    });
+            }
+            foreach (var type in types)
+            {
+                filter.Types.Add(
+                    new CheckBoxViewModel
+                    {
+                        Id = type.Id.Value,
+                        Value = type.Name,
+                        IsChecked = filter.SelectedTypes.Contains(type.Id.Value)
+                    });
+            }
+            foreach (var lang in languages)
+            {
+                filter.Langs.Add(
+                    new CheckBoxViewModel
+                    {
+                        Id = lang.Id.Value,
+                        Value = lang.ShortCode,
+                        IsChecked = filter.SelectedLangs.Contains(lang.Id.Value)
+                    });
+            }
+        }
+
     }
 }
