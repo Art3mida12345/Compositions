@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data.OracleClient;
-using System.Text;
-using WebGrease.Css.Extensions;
 using WorkOfFiction.Enums;
 using WorkOfFiction.Models;
 using static WorkOfFiction.Helpers.DbDictionaries;

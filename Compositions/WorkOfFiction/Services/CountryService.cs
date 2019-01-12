@@ -3,6 +3,8 @@ using System.Data.OracleClient;
 using WorkOfFiction.Enums;
 using WorkOfFiction.Helpers;
 using WorkOfFiction.Models;
+using static WorkOfFiction.Helpers.StringHelper;
+using static WorkOfFiction.Helpers.DbDictionaries;
 
 namespace WorkOfFiction.Services
 {
@@ -50,7 +52,7 @@ namespace WorkOfFiction.Services
                     $"select {CreateStringWithSeparator(Columns[TableName.Countries])} from {Tables[TableName.Countries]} where country_id = {id}";
                 var country = new Country();
 
-                using (var connection = new OracleConnection(Connection))
+                using (var connection = new OracleConnection(_oracleHelper.Connection))
                 {
                     var command = new OracleCommand(queryString, connection);
                     connection.Open();
@@ -74,7 +76,9 @@ namespace WorkOfFiction.Services
 
         public void Insert(Country country)
         {
-
+            _oracleHelper.Insert(TableName.Countries, country.ToStringExtension(false));
         }
+
+        public void CheckUniq
     }
 }

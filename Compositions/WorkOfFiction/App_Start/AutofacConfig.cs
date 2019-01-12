@@ -1,9 +1,10 @@
-﻿using Autofac;
+﻿using System.Web.Mvc;
+using Autofac;
 using Autofac.Integration.Mvc;
 using WorkOfFiction.Helpers;
 using WorkOfFiction.Services;
 
-namespace WorkOfFiction.App_Start
+namespace WorkOfFiction
 {
     public static class AutofacConfig
     {
@@ -14,12 +15,11 @@ namespace WorkOfFiction.App_Start
             builder.RegisterControllers(typeof(MvcApplication).Assembly);
 
             builder.RegisterType<GenreService>().AsSelf().InstancePerDependency();
-            builder.RegisterType<OracleHelper>().AsSelf().InstancePerRequest();
+            builder.RegisterType<OracleHelper>().AsSelf().InstancePerDependency();
+            builder.RegisterType<CountryService>().AsSelf().InstancePerDependency();
 
             var container = builder.Build();
-
-
-        
+            DependencyResolver.SetResolver(new AutofacDependencyResolver(container));
         }
     }
 }
