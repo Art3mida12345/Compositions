@@ -1,42 +1,51 @@
-﻿@model IEnumerable<WorkOfFiction.Models.Composition>
+﻿@using WorkOfFiction.Models
+@model IEnumerable<WorkOfFiction.Models.Composition>
 
 @{
     ViewBag.Title = "Index";
+
+    var filter = ViewBag.Filter as CompositionFilter;
 }
 
-<p>
-    @Html.ActionLink("Create New", "Create")
-    @Html.ActionLink("Filter", "Filter")
-</p>
-<table class="table">
-    <tr>
-        <th>
-            @Html.DisplayNameFor(model => model.Title)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Annotation)
-        </th>
-        <th></th>
-    </tr>
+<div class="container">
+    <p>
+        @Html.ActionLink("Create New", "Create", null, new { @class = "btn btn-default" })
+    </p>
 
-    @foreach (var item in Model) {
+    @Html.Partial("_filter", filter)
+
+    <table class="table">
         <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Title)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Annotation)
-            </td>
-            <td>
-                @Html.ActionLink("Edit", "Edit", new { id = item.Id }, new { @class = "btn btn-primary" }) |
-                @Html.ActionLink("Details", "Details", new { id = item.Id }, new { @class = "btn btn-default" }) |
-                @Html.ActionLink("Delete", "Delete", new { id = item.Id }, new { @class = "modal-item btn btn-danger" })
-            </td>
+            <th>
+                @Html.DisplayNameFor(model => model.Title)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Annotation)
+            </th>
+            <th></th>
         </tr>
-    }
 
-</table>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Title)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Annotation)
+                </td>
+                <td>
+                    @Html.ActionLink("Edit", "Edit", new { id = item.Id }, new { @class = "btn btn-primary" }) |
+                    @Html.ActionLink("Details", "Details", new { id = item.Id }, new { @class = "btn btn-default" }) |
+                    @Html.ActionLink("Delete", "Delete", new { id = item.Id }, new { @class = "modal-item btn btn-danger" })
+                </td>
+            </tr>
+        }
 
-<div id="modDialog" class="modal fade">
-    <div id="dialogContent" class="modal-dialog"></div>
+    </table>
+
+    <div id="modDialog" class="modal fade">
+        <div id="dialogContent" class="modal-dialog"></div>
+    </div>
+
 </div>
