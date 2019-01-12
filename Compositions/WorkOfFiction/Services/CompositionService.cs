@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Data.OracleClient;
+using System.Linq;
 using WorkOfFiction.Enums;
 using WorkOfFiction.Helpers;
 using WorkOfFiction.Models;
@@ -10,19 +11,26 @@ namespace WorkOfFiction.Services
     public class CompositionService
     {
         private readonly OracleHelper _oracleHelper;
+        private readonly AuthorService _authorService;
+        private readonly GenreService _genreService;
 
-        public CompositionService(OracleHelper oracleHelper)
+        public CompositionService(OracleHelper oracleHelper, AuthorService authorService, GenreService genreService)
         {
             _oracleHelper = oracleHelper;
+            _authorService = authorService;
+            _genreService = genreService;
         }
 
-        public Composition GetComposition(int? id)
+        public CompositionDetails GetComposition(int? id)
         {
             if (id.HasValue)
             {
                 var queryString =
-                    $"select {StringHelper.CreateStringWithSeparator(Columns[TableName.Compositions])} from {Tables[TableName.Compositions]} where composition_id = {id}";
-                var composition = new Composition();
+                    $@"select kudriavtseva_compositions.title, kudriavtseva_compositions.annotation, kudriavtseva_languages.description, kudriavtseva_types.name from kudriavtseva_compositions 
+inner join kudriavtseva_types on kudriavtseva_types.type_id = kudriavtseva_compositions.type_id 
+inner join kudriavtseva_languages on kudriavtseva_languages.language_id = kudriavtseva_compositions.language_id
+where kudriavtseva_compositions.composition_id ={id}";
+                var composition = new CompositionDetails();
 
                 using (var connection = new OracleConnection(_oracleHelper.Connection))
                 {
@@ -35,11 +43,18 @@ namespace WorkOfFiction.Services
                             composition.Id = id.Value;
                             composition.Title = reader.GetString(0);
                             composition.Annotation = reader.GetString(1);
-                            composition.LanguageId = reader.GetInt32(2);
-                            composition.TypeId = reader.GetInt32(3);
+                            composition.Language = reader.GetString(2);
+                            composition.Type = reader.GetString(3);
                         }
                     }
                 }
+                var authors =  _authorService.GetByComposition(id.Value);
+                var temp = authors.Select(a => a.Id + "-" + a.FirstName + " " + a.LastName);
+                composition.Authors = string.Join(", ", temp);
+
+                var genres = _genreService.GetGenresByComposition(id.Value);
+                temp = genres.Select(g => g.Name);
+                composition.Genres = string.Join(", ", temp);
 
                 return composition;
             }

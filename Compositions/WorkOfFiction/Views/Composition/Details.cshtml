@@ -1,0 +1,69 @@
+﻿@model WorkOfFiction.Models.CompositionDetails
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+    
+<div class="form-horizontal">
+    <hr />
+    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+    <div class="form-group">
+        @Html.LabelFor(model => model.Id, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.EditorFor(model => model.Id, new { htmlAttributes = new { @class = "form-control", @disabled = "disabled" } })
+        </div>
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.Title, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.EditorFor(model => model.Title, new { htmlAttributes = new { @class = "form-control", @disabled = "disabled" } })
+        </div>
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.Annotation, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.EditorFor(model => model.Annotation, new { htmlAttributes = new { @class = "form-control", @disabled = "disabled" } })
+        </div>
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.Language, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.EditorFor(model => model.Language, new { htmlAttributes = new { @class = "form-control", @disabled = "disabled" } })
+        </div>
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.Type, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.EditorFor(model => model.Type, new { htmlAttributes = new { @class = "form-control", @disabled = "disabled" }})
+        </div>
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.Authors, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.EditorFor(model => model.Authors, new { htmlAttributes = new { @class = "form-control", @disabled = "disabled" } })
+        </div>
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.Genres, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.EditorFor(model => model.Genres, new { htmlAttributes = new { @class = "form-control", @disabled = "disabled" } })
+        </div>
+    </div>
+</div>
+}
+
+<div>
+    @Html.ActionLink("Back to List", "Index")
+</div>

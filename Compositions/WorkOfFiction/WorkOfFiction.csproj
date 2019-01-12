@@ -163,6 +163,7 @@
     <Compile Include="Models\Author.cs" />
     <Compile Include="Models\CheckBoxViewModel.cs" />
     <Compile Include="Models\Composition.cs" />
+    <Compile Include="Models\CompositionDetails.cs" />
     <Compile Include="Models\Country.cs" />
     <Compile Include="Models\CompositionFilter.cs" />
     <Compile Include="Models\Genre.cs" />
@@ -239,6 +240,7 @@
     <Content Include="Views\Composition\_checkBoxPicker.cshtml" />
     <Content Include="Views\Composition\Filter.cshtml" />
     <Content Include="Views\Composition\Delete.cshtml" />
+    <Content Include="Views\Composition\Details.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

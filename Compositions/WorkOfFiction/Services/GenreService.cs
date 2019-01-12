@@ -87,5 +87,34 @@ namespace WorkOfFiction.Services
 
             return null;
         }
+
+        public IEnumerable<Genre> GetGenresByComposition(int id)
+        {
+            var queryString = $@"select kudriavtseva_genres.* from
+kudriavtseva_genres
+inner join kudriavtseva_comps_genres on kudriavtseva_comps_genres.genre_id = kudriavtseva_genres.genre_id
+inner join kudriavtseva_compositions on kudriavtseva_compositions.composition_id = kudriavtseva_comps_genres.composition_id
+where kudriavtseva_compositions.composition_id ={id}";
+            var genres = new List<Genre>();
+
+            using (var connection = new OracleConnection(_oracleHelper.Connection))
+            {
+                var command = new OracleCommand(queryString, connection);
+                connection.Open();
+                using (var reader = command.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        genres.Add(new Genre
+                        {
+                            Id = reader.GetInt32(0),
+                            Name = reader.GetString(1)
+                        });
+                    }
+                }
+            }
+
+            return genres;
+        }
     }
 }
