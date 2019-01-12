@@ -52,8 +52,9 @@ namespace WorkOfFiction.Services
                             FirstName = reader.GetString(1),
                             LastName = reader.GetString(2),
                             DateBirth = reader.GetDateTime(3),
-                            CountryId = reader.GetInt32(4),
-                            Nickname = reader.GetString(5)
+                            DateDeath = reader.GetDateTime(4),
+                            CountryId = reader.GetInt32(5),
+                            Nickname = reader.GetString(6)
                         });
                     }
                 }
@@ -67,7 +68,7 @@ namespace WorkOfFiction.Services
             if (id.HasValue)
             {
                 var queryString =
-                    $"select {StringHelper.CreateStringWithSeparator(Columns[TableName.Authors])} from {Tables[TableName.Authors]} where country_id = {id}";
+                    $"select {StringHelper.CreateStringWithSeparator(Columns[TableName.Authors])} from {Tables[TableName.Authors]} where author_id = {id}";
                 var author = new Author();
 
                 using (var connection = new OracleConnection(_oracleHelper.Connection))

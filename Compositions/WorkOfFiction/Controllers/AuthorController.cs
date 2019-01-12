@@ -7,7 +7,7 @@ namespace WorkOfFiction.Controllers
     public class AuthorController : Controller
     {
         private readonly AuthorService _authorService;
-
+        
 
         public AuthorController(AuthorService authorService)
         {
@@ -28,6 +28,14 @@ namespace WorkOfFiction.Controllers
             return View(author);
         }
 
+        public ActionResult Details(int? id)
+        {
+            var author = id.HasValue ? _authorService.GetAuthor(id.Value) : new Author();
+
+            return View(author);
+        }
+
+
         [HttpPost]
         public ActionResult Edit(Author author)
         {
@@ -39,6 +47,8 @@ namespace WorkOfFiction.Controllers
 
             return View(author);
         }
+
+
 
         [HttpPost]
         [ValidateAntiForgeryToken]
