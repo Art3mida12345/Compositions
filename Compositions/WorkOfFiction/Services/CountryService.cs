@@ -85,9 +85,18 @@ namespace WorkOfFiction.Services
             _oracleHelper.Update(TableName.Countries, country.Id, country.ToStringExtension());
         }
 
-        public void Delete(int id)
+        public bool Delete(int id)
         {
-            _oracleHelper.Delete(TableName.Countries, id);
+            try
+            {
+                _oracleHelper.Delete(TableName.Countries, id);
+            }
+            catch
+            {
+                return false;
+            }
+
+            return true;
         }
     }
 }

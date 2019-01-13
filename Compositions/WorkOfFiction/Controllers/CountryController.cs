@@ -42,11 +42,14 @@ namespace WorkOfFiction.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public RedirectToRouteResult Delete(Genre genre)
+        public ActionResult Delete(Genre genre)
         {
             if (genre.Id.HasValue)
             {
-                _countryService.Delete(genre.Id.Value);
+                var wasDeleted = _countryService.Delete(genre.Id.Value);
+
+                if (!wasDeleted)
+                    return View("Message", model: $"Country: {genre.Name} can not be deleted due to active relations.");
             }
 
             return RedirectToAction("Index");

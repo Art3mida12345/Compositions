@@ -23,7 +23,7 @@ namespace WorkOfFiction.Services
 
         public void Insert(Genre genre)
         {
-            _oracleHelper.Insert(TableName.Genres, genre.ToStringExtension());
+            _oracleHelper.Insert(TableName.Genres, genre.ToStringExtension(false));
         }
 
         public void Update(Genre genre)
@@ -31,9 +31,18 @@ namespace WorkOfFiction.Services
             _oracleHelper.Update(TableName.Genres, genre.Id, genre.ToStringExtension());
         }
 
-        public void Delete(int genreId)
+        public bool Delete(int genreId)
         {
-            _oracleHelper.Delete(TableName.Genres, genreId);
+            try
+            {
+                _oracleHelper.Delete(TableName.Genres, genreId);
+            }
+            catch
+            {
+                return false;
+            }
+
+            return true;
         }
 
         public IEnumerable<Genre> GetAllGenres()
