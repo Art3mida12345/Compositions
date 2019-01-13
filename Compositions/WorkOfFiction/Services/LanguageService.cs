@@ -28,7 +28,7 @@ namespace WorkOfFiction.Services
 
         public void Update(Language language)
         {
-            _oracleHelper.Update(TableName.Genres, language.Id, language.ToStringExtension());
+            _oracleHelper.Update(TableName.Languages, language.Id, language.ToStringExtension());
         }
 
         public void Delete(int languageId)

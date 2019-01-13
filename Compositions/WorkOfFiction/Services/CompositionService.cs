@@ -12,13 +12,17 @@ namespace WorkOfFiction.Services
     {
         private readonly OracleHelper _oracleHelper;
         private readonly AuthorService _authorService;
+        private readonly LanguageService _languageService;
+        private readonly TypeService _typeService;
         private readonly GenreService _genreService;
 
-        public CompositionService(OracleHelper oracleHelper, AuthorService authorService, GenreService genreService)
+        public CompositionService(OracleHelper oracleHelper, AuthorService authorService, GenreService genreService, TypeService typeService, LanguageService languageService)
         {
             _oracleHelper = oracleHelper;
             _authorService = authorService;
             _genreService = genreService;
+            _typeService = typeService;
+            _languageService = languageService;
         }
 
         public CompositionDetails GetComposition(int? id)
@@ -55,6 +59,43 @@ where kudriavtseva_compositions.composition_id ={id}";
                 var genres = _genreService.GetGenresByComposition(id.Value);
                 temp = genres.Select(g => g.Name);
                 composition.Genres = string.Join(", ", temp);
+
+                return composition;
+            }
+
+            return null;
+        }
+
+        public Composition Get(int? id)
+        {
+            if (id.HasValue)
+            {
+                var queryString =
+                    $@"select kudriavtseva_compositions.title, kudriavtseva_compositions.annotation, kudriavtseva_compositions.language_id, kudriavtseva_compositions.type_id from kudriavtseva_compositions 
+where kudriavtseva_compositions.composition_id ={id}";
+                var composition = new Composition();
+
+                using (var connection = new OracleConnection(_oracleHelper.Connection))
+                {
+                    var command = new OracleCommand(queryString, connection);
+                    connection.Open();
+                    using (var reader = command.ExecuteReader())
+                    {
+                        if (reader.Read())
+                        {
+                            composition.Id = id.Value;
+                            composition.Title = reader.GetString(0);
+                            composition.Annotation = reader.GetString(1);
+                            composition.LanguageId = reader.GetInt32(2);
+                            composition.TypeId = reader.GetInt32(3);
+                        }
+                    }
+                }
+
+                composition.Authors = _authorService.GetByComposition(id.Value);
+                composition.Language = _languageService.GetLanguage(composition.LanguageId);
+                composition.Type = _typeService.GetType(composition.TypeId);
+                composition.Genres = _genreService.GetGenresByComposition(id.Value);
 
                 return composition;
             }
@@ -143,13 +184,20 @@ where kudriavtseva_compositions.composition_id ={id}";
                 query = $"delete from kudriavtseva_compositions where kudriavtseva_compositions.composition_id  = {id}";
                 ExecuteTransaction(query);
 
-                //_oracleHelper.Delete(TableName.Compositions, id);
-
                 return true;
             }
             catch
             {
                 return false;
+            }
+        }
+
+        public void Edit(Composition composition)
+        {
+            if (composition.Id.HasValue)
+            {
+                Delete(composition.Id.Value);
+                Insert(composition);
             }
         }
 

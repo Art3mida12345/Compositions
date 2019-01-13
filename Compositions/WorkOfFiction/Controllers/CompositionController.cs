@@ -66,6 +66,16 @@ namespace WorkOfFiction.Controllers
                 return RedirectToAction("Index");
             }
 
+            ViewBag.Types = new SelectList(_typeService.GetAllTypes(), "Id", "Name");
+            ViewBag.Genres = new MultiSelectList(_genreService.GetAllGenres(), "Id", "Name");
+            ViewBag.Languages = new SelectList(_languageService.GetAllLanguages(), "Id", "Description");
+            var authors = _authorService.GetAllAuthors().Select(author => new AuthorViewModel
+            {
+                Id = author.Id,
+                FullName = author.Id + "-" + author.FirstName + " " + author.LastName
+            });
+            ViewBag.Authors = new SelectList(authors, "Id", "FullName");
+
             return View(composition);
         }
 
@@ -102,6 +112,48 @@ namespace WorkOfFiction.Controllers
         public ActionResult Details(int? id)
         {
             var composition = _compositionService.GetComposition(id);
+
+            return View(composition);
+        }
+
+        public ActionResult Edit(int? id)
+        {
+            ViewBag.Types = new SelectList(_typeService.GetAllTypes(), "Id", "Name");
+            ViewBag.Genres = new MultiSelectList(_genreService.GetAllGenres(), "Id", "Name");
+            ViewBag.Languages = new SelectList(_languageService.GetAllLanguages(), "Id", "Description");
+            var authors = _authorService.GetAllAuthors().Select(author => new AuthorViewModel
+            {
+                Id = author.Id,
+                FullName = author.Id + "-" + author.FirstName + " " + author.LastName
+            });
+            ViewBag.Authors = new SelectList(authors, "Id", "FullName");
+
+            var composition = id.HasValue ? _compositionService.Get(id) : new Composition();
+            composition.AuthorsIds = composition.Authors.Select(a => a.Id).ToArray();
+            composition.GenresIds = composition.Genres.Select(g => g.Id).ToArray();
+
+            return View(composition);
+        }
+
+        [HttpPost]
+        public ActionResult Edit(Composition composition)
+        {
+            if (ModelState.IsValid)
+            {
+                _compositionService.Edit(composition);
+
+                return RedirectToAction("Index");
+            }
+
+            ViewBag.Types = new SelectList(_typeService.GetAllTypes(), "Id", "Name");
+            ViewBag.Genres = new MultiSelectList(_genreService.GetAllGenres(), "Id", "Name");
+            ViewBag.Languages = new SelectList(_languageService.GetAllLanguages(), "Id", "Description");
+            var authors = _authorService.GetAllAuthors().Select(author => new AuthorViewModel
+            {
+                Id = author.Id,
+                FullName = author.Id + "-" + author.FirstName + " " + author.LastName
+            });
+            ViewBag.Authors = new SelectList(authors, "Id", "FullName");
 
             return View(composition);
         }

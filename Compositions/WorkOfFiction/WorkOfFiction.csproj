@@ -242,6 +242,7 @@
     <Content Include="Views\Composition\_filter.cshtml" />
     <Content Include="Views\Composition\Delete.cshtml" />
     <Content Include="Views\Composition\Details.cshtml" />
+    <Content Include="Views\Composition\Edit.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
