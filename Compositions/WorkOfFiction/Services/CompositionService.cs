@@ -135,12 +135,15 @@ where kudriavtseva_compositions.composition_id ={id}";
             {
                 var query =
                     $"delete from kudriavtseva_comps_authors where kudriavtseva_comps_authors.composition_id = {id}";
-                Execute(query);
+                ExecuteTransaction(query);
 
                 query = $"delete from kudriavtseva_comps_genres where kudriavtseva_comps_genres.composition_id = {id}";
-                Execute(query);
+                ExecuteTransaction(query);
 
-                _oracleHelper.Delete(TableName.Compositions, id);
+                query = $"delete from kudriavtseva_compositions where kudriavtseva_compositions.composition_id  = {id}";
+                ExecuteTransaction(query);
+
+                //_oracleHelper.Delete(TableName.Compositions, id);
 
                 return true;
             }
@@ -178,6 +181,20 @@ where kudriavtseva_compositions.composition_id ={id}";
                 var cmd = conn.CreateCommand();
                 cmd.CommandText = query;
                 cmd.ExecuteNonQuery();
+            }
+        }
+
+        private void ExecuteTransaction(string query)
+        {
+            using (var conn = new OracleConnection(_oracleHelper.Connection))
+            {
+                conn.Open();
+                var transaction = conn.BeginTransaction();
+                var cmd = conn.CreateCommand();
+                cmd.Transaction = transaction;
+                cmd.CommandText = query;
+                cmd.ExecuteNonQuery();
+                transaction.Commit();
             }
         }
     }
