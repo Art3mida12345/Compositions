@@ -19,12 +19,12 @@ namespace WorkOfFiction.Models
 
         [DataType(DataType.Date)]
         [Display(Name = "Date Birth")]
+        [Required]
         public DateTime DateBirth { get; set; }
 
         [DataType(DataType.Date)]
         [Display(Name = "Date Death")]
-        [Required]
-        public DateTime DateDeath { get; set; }
+        public DateTime? DateDeath { get; set; }
 
         [Display(Name = "Country")]
         [Required]

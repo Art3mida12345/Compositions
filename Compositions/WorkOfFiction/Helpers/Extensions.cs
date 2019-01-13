@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
 
 namespace WorkOfFiction.Helpers
 {
@@ -22,7 +21,7 @@ namespace WorkOfFiction.Helpers
                     {
                         properties.Add(Convert.ToBoolean(property.GetValue(obj, null)) ? "1": "0");
                     }
-                    else if (property.PropertyType == typeof(DateTime))
+                    else if (property.PropertyType == typeof(DateTime) || property.PropertyType == typeof(DateTime?))
                     {
                         properties.Add(Convert.ToDateTime(property.GetValue(obj, null)).ToDateInsertValueOracle("MM/dd/yyyy", "MM/DD/YYYY"));
                     }	

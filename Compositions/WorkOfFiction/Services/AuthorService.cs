@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Data.OracleClient;
 using WorkOfFiction.Enums;
 using WorkOfFiction.Helpers;
@@ -72,6 +73,14 @@ namespace WorkOfFiction.Services
                 }
             }
 
+            foreach (var author in authors)
+            {
+                if (author.DateDeath == DateTime.MinValue)
+                {
+                    author.DateDeath = null;
+                }
+            }
+
             return authors;
         }
 
@@ -100,6 +109,11 @@ namespace WorkOfFiction.Services
                             author.Nickname = reader.GetString(5);
                         }
                     }
+                }
+
+                if (author.DateDeath == DateTime.MinValue)
+                {
+                    author.DateDeath = null;
                 }
 
                 author.Country = _countryService.GetCountry(author.CountryId);

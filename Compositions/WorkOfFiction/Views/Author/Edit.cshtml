@@ -14,14 +14,12 @@
     <div class="form-horizontal">
         <h4>Author</h4>
         <hr />
-        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
         @Html.HiddenFor(model => model.Id)
 
         <div class="form-group">
             @Html.LabelFor(model => model.FirstName, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
                 @Html.EditorFor(model => model.FirstName, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.FirstName, "", new { @class = "text-danger" })
             </div>
         </div>
 
@@ -29,25 +27,22 @@
             @Html.LabelFor(model => model.LastName, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
                 @Html.EditorFor(model => model.LastName, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.LastName, "", new { @class = "text-danger" })
             </div>
         </div>
 
         <div class="form-group">
             @Html.LabelFor(model => model.DateBirth, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                <input type="date" id="input-date-from" name="DateFilterModel.DateFrom"
+                <input type="date" id="DateBirth" name="DateBirth"
                        value="@($"{Model.DateBirth:yyyy-MM-dd}")" class = "form-control"/>
-                @Html.ValidationMessageFor(model => model.DateBirth, "", new {@class = "text-danger"})
             </div>
         </div>
 
         <div class="form-group">
             @Html.LabelFor(model => model.DateDeath, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                <input type="date" id="input-date-from" name="DateFilterModel.DateFrom"
+                <input type="date" id="DateDeath" name="DateDeath"
                        value="@($"{Model.DateDeath:yyyy-MM-dd}")" class = "form-control"/>
-                @Html.ValidationMessageFor(model => model.DateDeath, "", new {@class = "text-danger"})
             </div>
         </div>
 
@@ -55,7 +50,6 @@
             @Html.LabelFor(model => model.CountryId, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
                 @Html.DropDownListFor(model => model.CountryId, (SelectList)ViewBag.Countries, htmlAttributes: new { @class = "form-control" })
-                @Html.ValidationMessageFor(model => model.CountryId, "", new { @class = "text-danger" })
             </div>
         </div>
 
@@ -63,7 +57,6 @@
             @Html.LabelFor(model => model.Nickname, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
                 @Html.EditorFor(model => model.Nickname, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.Nickname, "", new { @class = "text-danger" })
             </div>
         </div>
 
