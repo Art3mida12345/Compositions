@@ -43,7 +43,7 @@
             @Html.LabelFor(model => model.DateDeath, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
                 <input type="date" id="input-date-from" name="DateFilterModel.DateFrom"
-                       value="@($"{Model.DateBirth:yyyy-MM-dd}")" disabled="disabled" class="form-control" />
+                       value="@($"{Model.DateDeath:yyyy-MM-dd}")" disabled="disabled" class="form-control" />
             </div>
         </div>
 
