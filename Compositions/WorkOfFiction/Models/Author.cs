@@ -8,22 +8,32 @@ namespace WorkOfFiction.Models
         public int? Id { get; set; }
 
         [MaxLength(127)]
+        [Display(Name = "First Name")]
+        [Required]
         public string FirstName { get; set; }
 
         [MaxLength(127)]
+        [Display(Name = "Last Name")]
+        [Required]
         public string LastName { get; set; }
 
         [DataType(DataType.Date)]
+        [Display(Name = "Date Birth")]
         public DateTime DateBirth { get; set; }
 
         [DataType(DataType.Date)]
+        [Display(Name = "Date Death")]
+        [Required]
         public DateTime DateDeath { get; set; }
 
+        [Display(Name = "Country")]
+        [Required]
         public int? CountryId { get; set; }
 
         public Country Country { get; set; }
 
         [MaxLength(127)]
+        [Required]
         public string Nickname { get; set; }
     }
 }
