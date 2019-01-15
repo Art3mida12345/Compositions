@@ -51,7 +51,7 @@
     <div class="form-group">
         @Html.LabelFor(model => model.Authors, htmlAttributes: new { @class = "control-label col-md-2" })
         <div class="col-md-10">
-            @Html.EditorFor(model => model.Authors, new { htmlAttributes = new { @class = "form-control", @disabled = "disabled" } })
+            @Html.TextAreaFor(model => model.Authors,new { @class = "form-control", @disabled = "disabled" })
         </div>
     </div>
 
