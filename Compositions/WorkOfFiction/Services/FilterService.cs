@@ -118,7 +118,7 @@ namespace WorkOfFiction.Services
             var textList = partialText.Split(new[] {' ', '-', '.', '_'});
 
 
-            sb.Append($"({columnFiltered} like '%{textList[0]}%'");
+            sb.Append($"(upper({columnFiltered}) like upper('%{textList[0]}%')");
 
             for (int i = 1; i < textList.Length; i++)
             {
